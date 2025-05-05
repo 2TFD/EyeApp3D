@@ -20,27 +20,22 @@ class _GalleryScreenState extends State<GalleryScreen> {
       appBar: AppBar(title: Text('gallery')),
       body: RefreshIndicator(
         onRefresh: () async {
-          setState(() {
-          });
+          setState(() {});
           return Future<void>.delayed(Duration(seconds: 1));
         },
         child: FutureBuilder(
-          future: Storage().readList(),
+          future: Storage().getList(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data != null) {
-                childW = GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 2,
-                  children:
-                      (snapshot.data as List<String>).map((e) {
-                        return ImageCard(fileImage: File(e));
-                      }).toList(),
-                );
-              } else {
-                childW = Center(child: Text('у вас нету фото'));
-              }
+              childW = GridView.count(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 2,
+                children:
+                    (snapshot.data as List<String>).map((e) {
+                      return ImageCard(fileImage: File(e));
+                    }).toList(),
+              );
             } else {
               childW = Center(child: CircularProgressIndicator());
             }

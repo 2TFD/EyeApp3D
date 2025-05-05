@@ -51,7 +51,7 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                       childW = Center(child: Text('попробуйте обновить токен', style: TextStyle(color: Colors.white),));
                     }
                   } else {
-                    childW = CircularProgressIndicator();
+                    childW = Center(child: CircularProgressIndicator());
                   }
                   return childW;
                 },

@@ -45,16 +45,15 @@ class SaveDataScreen extends StatelessWidget {
             color: Colors.grey,
             onPressed: () async {
               // сохранение данных
-              Storage().addAll(name, token, true);
+              Storage().setAll(name, token);
               context.go('/');
             },
           ),
           CupertinoButton(
             child: Text('прочитать данные'),
             onPressed: () async {
-              print(await Storage().readName());
-              print(await Storage().readToken());
-              print(await Storage().readisReg());
+              print(await Storage().getName());
+              print(await Storage().getToken());
             },
           ),
         ],

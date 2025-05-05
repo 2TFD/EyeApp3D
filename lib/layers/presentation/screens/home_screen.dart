@@ -38,13 +38,13 @@ class HomeScreen extends StatelessWidget {
             CupertinoButton(
               child: Text('read'),
               onPressed: () async {
-                print(await Storage().readList());
+                print(await Storage().getList());
               },
             ),
             CupertinoButton(
               child: Text('del'),
               onPressed: () async {
-                Storage().delList();
+                Storage().clearList();
               },
             ),
           ],

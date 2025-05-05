@@ -18,7 +18,7 @@ class Api {
         file.path, // путь к твоему файлу
       ),
     );
-    String token = await Storage().readToken();
+    String token = await Storage().getToken();
     request.headers['accept'] = 'application/json';
     request.headers['hf-token'] = token;
     request.headers['Content-Type'] = 'multipart/form-data';

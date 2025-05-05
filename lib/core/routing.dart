@@ -19,6 +19,15 @@ import 'package:go_router/go_router.dart';
 class Routing {
   GoRouter get router => GoRouter(
     initialLocation: '/',
+    redirect: (context, state) async {
+      bool isInit = await Storage().getIsInit();
+      if (!isInit) {
+        Storage().initStorage();
+        return '/reg';
+      } else {
+        return null;
+      }
+    },
     routes: [
       StatefulShellRoute.indexedStack(
         builder:

@@ -53,12 +53,7 @@ class _CameraScreenState extends State<CameraScreen> {
     if (!cameraController.value.isInitialized) {
       return Scaffold(
         body: Center(
-          child: Container(
-            height: 80,
-            width: 80,
-            color: Colors.redAccent,
-            child: Center(child: Text('error')),
-          ),
+          child: CircularProgressIndicator(),
         ),
       );
     }
@@ -76,8 +71,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   image = await cameraController.takePicture();
                   print(image!.path);
                   Storage().addToList(image!.path);
-                  print(await Storage().readList());
-                  // context.pushNamed('preview', extra: image!);
+                  print(await Storage().getList());
                   context.goNamed('preview', extra: {'par1': image!});
                 },
                 child: Text(
