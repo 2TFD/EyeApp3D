@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
+import 'package:eyeapp3d/layers/presentation/ui/image_card.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,8 @@ import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +26,34 @@ class HomeScreen extends StatelessWidget {
         ),
         title: Text('home'),
       ),
+
+
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            Text('привет!', style: TextStyle(color: Colors.white)),
-            CupertinoButton(
-              child: Text('addlist'),
-              onPressed: () async {
-                Storage().addToList('new123');
-              },
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Container(color: Colors.amber, height: 50,width: 50,)
+                    ],
+                  ),
+                ),
+              ),
             ),
+            SizedBox(height: 25,),
+            Text('привет!', style: TextStyle(color: Colors.white, fontSize: 20)),
+            Text('username', style: TextStyle(color: Colors.white)),
+            SizedBox(height: 40,),
+            Text('твой токен: '),
+
+
+
+
             CupertinoButton(
               child: Text('read'),
               onPressed: () async {
