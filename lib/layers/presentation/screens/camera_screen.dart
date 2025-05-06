@@ -1,13 +1,8 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
-import 'package:eyeapp3d/layers/presentation/screens/preview_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:video_player/video_player.dart';
 
 import 'package:eyeapp3d/main.dart';
 
@@ -51,11 +46,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     if (!cameraController.value.isInitialized) {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     return SafeArea(
       child: Scaffold(
