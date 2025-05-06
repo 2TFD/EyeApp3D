@@ -11,6 +11,7 @@ import 'package:eyeapp3d/layers/presentation/screens/reg/save_data_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/reg/web_page_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/routing_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/settings_screen.dart';
+import 'package:eyeapp3d/layers/presentation/screens/view_images_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/view_model_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/reg/welcome_screen.dart';
 import 'package:flutter/widgets.dart';
@@ -44,6 +45,12 @@ class Routing {
                     path: '/settings',
                     builder: (context, state) => SettingsScreen(),
                   ),
+
+
+                  GoRoute(
+                    path: '/test',
+                    builder: (context, state) => ViewImagesScreen(promt: 'cars'),
+                  )
                 ],
               ),
             ],
@@ -122,3 +129,5 @@ class Routing {
     ],
   );
 }
+
+

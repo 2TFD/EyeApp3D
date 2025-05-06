@@ -14,49 +14,63 @@ class SaveDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          Center(
-            child: Text(
-              'заполните поля',
-              style: TextStyle(color: Colors.white, fontSize: 30),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Center(
+              child: Text(
+                'заполните поля ниже',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             ),
-          ),
-          SizedBox(height: 60),
-          TextField(
-            onChanged: (value) {
-              name = value;
-            },
-            decoration: InputDecoration(label: Text('ваше имя')),
-          ),
-          SizedBox(height: 60),
-          TextField(
-            onChanged: (value) {
-              token = value;
-            },
-            decoration: InputDecoration(label: Text('ваш токен')),
-          ),
-          SizedBox(height: 100),
-          CupertinoButton(
-            child: Text(
-              'завершить регистрацию',
-              style: TextStyle(color: Colors.white),
+            SizedBox(height: 60),
+            TextField(
+              onChanged: (value) {
+                name = value;
+              },
+              decoration: InputDecoration(
+                label: Text(
+                  'ваше имя',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
             ),
-            color: Colors.grey,
-            onPressed: () async {
-              // сохранение данных
-              Storage().setAll(name, token);
-              context.go('/');
-            },
-          ),
-          CupertinoButton(
-            child: Text('прочитать данные'),
-            onPressed: () async {
-              print(await Storage().getName());
-              print(await Storage().getToken());
-            },
-          ),
-        ],
+            SizedBox(height: 60),
+            TextField(
+              onChanged: (value) {
+                token = value;
+              },
+              decoration: InputDecoration(
+                label: Text(
+                  'ваш токен',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ),
+            SizedBox(height: 100),
+
+            CupertinoButton(
+              child: Text(
+                'завершить регистрацию',
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Colors.grey,
+              onPressed: () async {
+                // сохранение данных
+                Storage().setAll(name, token);
+                context.go('/');
+              },
+            ),
+
+            CupertinoButton(
+              child: Text('прочитать данные'),
+              onPressed: () async {
+                print(await Storage().getName());
+                print(await Storage().getToken());
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

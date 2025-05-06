@@ -16,11 +16,7 @@ class WelcomeScreen extends StatelessWidget {
           children: [
             Text(
               'Привет!',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 30,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge
             ),
             Text('следуй за инструкциями'),
             SizedBox(height: 60),

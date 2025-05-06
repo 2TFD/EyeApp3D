@@ -14,9 +14,9 @@ class RoutingScreen extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.transparent,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home, color: Colors.white,), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.camera_alt, color: Colors.white,), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.photo_library_outlined, color: Colors.white,), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.camera_alt), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.photo_library_outlined), label: ''),
         ],
         currentIndex: statefulNavigationShell.currentIndex,
         onTap: (index)=>statefulNavigationShell.goBranch(

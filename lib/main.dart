@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
+import 'package:eyeapp3d/core/brand/brand_theme.dart';
 import 'package:eyeapp3d/core/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,20 +24,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      theme: ThemeData(
-        // textTheme: TextTheme(
-        //   bodyMedium: TextStyle(
-        //     color: Colors.white,
-        //     fontSize: 20
-        //   ),
-        //   bodySmall: TextStyle(
-        //     color: Colors.white,
-        //     fontSize: 14
-        //   ), 
-        // ),
-        scaffoldBackgroundColor: Colors.black,
-        appBarTheme: AppBarTheme(backgroundColor: Colors.black)
-      ),
+      theme: BrandTheme().darkTheme,
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       routerConfig: Routing().router,

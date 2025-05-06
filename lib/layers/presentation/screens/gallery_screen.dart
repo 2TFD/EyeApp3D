@@ -24,7 +24,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           return Future<void>.delayed(Duration(seconds: 1));
         },
         child: FutureBuilder(
-          future: Storage().getList(),
+          future: Storage().getListPhoto(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               childW = GridView.count(

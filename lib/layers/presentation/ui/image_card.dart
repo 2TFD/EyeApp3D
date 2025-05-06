@@ -17,7 +17,6 @@ class ImageCard extends StatelessWidget {
       child: Container(
         height: 250,
         width: 250,
-        color: Colors.black,
         child: Image.file(fileImage),
       ),
       onTap: () async {

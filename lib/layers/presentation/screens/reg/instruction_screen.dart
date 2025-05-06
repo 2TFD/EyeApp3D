@@ -13,19 +13,19 @@ class InstructionScreen extends StatelessWidget {
     Container(
       width: 300,
       margin: EdgeInsets.symmetric(horizontal: 5.0),
-      color: Colors.white,
+      color: Colors.blueAccent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('создайте или войдите \nв аккаунт huggingface')
+          Text('создайте или войдите \nв аккаунт huggingface',)
         ],
       )
     ),
     Container(
       width: 300,
       margin: EdgeInsets.symmetric(horizontal: 5.0),
-      color: Colors.white,
+      color: Colors.blueAccent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,7 +37,7 @@ class InstructionScreen extends StatelessWidget {
     Container(
       width: 300,
       margin: EdgeInsets.symmetric(horizontal: 5.0),
-      color: Colors.white,
+      color: Colors.blueAccent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,13 +62,13 @@ class InstructionScreen extends StatelessWidget {
           CupertinoButton(
             child: Text(
               'перейти на сайт',
-              style: TextStyle(color: Colors.white),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             onPressed: () => context.push('/reg/howto/web'),
           ),
           SizedBox(height: 50),
           CupertinoButton(
-            child: Text('далее', style: TextStyle(color: Colors.white)),
+            child: Text('далее', style: Theme.of(context).textTheme.bodyMedium),
             onPressed: () =>  context.push('/reg/howto/save'),
           ),
         ],

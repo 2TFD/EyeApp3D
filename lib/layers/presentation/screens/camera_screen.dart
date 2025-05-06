@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:eyeapp3d/core/brand/brand_theme.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,23 +57,13 @@ class _CameraScreenState extends State<CameraScreen> {
             children: [
               CameraPreview(cameraController),
               SizedBox(height: 30),
-              CupertinoButton(
-                color: Colors.blueGrey,
-                onPressed: () async {
+              IconButton(onPressed:  () async {
                   image = await cameraController.takePicture();
                   print(image!.path);
-                  Storage().addToList(image!.path);
-                  print(await Storage().getList());
+                  Storage().addToListPhoto(image!.path);
+                  print(await Storage().getListPhoto());
                   context.goNamed('preview', extra: {'par1': image!});
-                },
-                child: Text(
-                  'take picture',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
+                }, icon: Icon(Icons.circle_rounded, size: 80,)),
             ],
           ),
         ),

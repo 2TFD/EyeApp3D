@@ -7,8 +7,9 @@ class Storage {
     final storage = await _storage;
     await storage.setString('name', '');
     await storage.setString('token', '');
-    await storage.setStringList('list', []);
+    await storage.setStringList('listPathPhoto', []);
     await storage.setBool('isInit', true);
+    await storage.setStringList('listPathImage', []);
   }
 
   Future<bool> getIsInit() async {
@@ -44,23 +45,48 @@ class Storage {
     return name!;
   }
 
-  void addToList(String element) async {
+  void addToListPhoto(String element) async {
     final storage = await _storage;
-    List<String>? nowList = await storage.getStringList('list');
+    List<String>? nowList = await storage.getStringList('listPathPhoto');
     nowList!.add(element);
     List<String> newList = nowList;
-    await storage.setStringList('list', newList);
-    print(await storage.getStringList('list'));
+    await storage.setStringList('listPathPhoto', newList);
+    print(await storage.getStringList('listPathPhoto'));
   }
 
-  Future<List<String>> getList() async {
+  Future<List<String>> getListPhoto() async {
     final storage = await _storage;
-    List<String>? list = await storage.getStringList('list');
+    List<String>? list = await storage.getStringList('listPathPhoto');
     return list!;
   }
 
-  void clearList() async {
+  void clearListPhoto() async {
     final storage = await _storage;
-    await storage.setStringList('list', []);
+    await storage.setStringList('listPathPhoto', []);
+  }
+
+  void addToListImage(List<String> list) async {
+    final storage = await _storage;
+    String stringList = list.join(';');
+    List<String>? nowList = await storage.getStringList('listPathImage');
+    nowList!.add(stringList);
+    List<String> newList = nowList;
+    await storage.setStringList('listPathImage', newList);
+    print(await storage.getStringList('listPathImage'));
+  }
+
+  Future<List<List<String>>> getListImage() async {
+    final storage = await _storage;
+    List<String>? list = await storage.getStringList('listPathImage');
+    List<List<String>> listString =
+        list!.map((e) {
+          return e.split(';');
+        }).toList();
+    return listString;
+  }
+
+  void clearListImage() async {
+    final storage = await _storage;
+    await storage.setStringList('listPathImage', []);
   }
 }

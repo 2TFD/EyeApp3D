@@ -45,7 +45,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       extra: {'par1': widget.image, 'par2': dir.path},
                     );
                   },
-                  icon: Icon(Icons.check, color: Colors.white),
+                  icon: Icon(Icons.check),
                 ),
               ],
             ),

@@ -36,7 +36,7 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                 '${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
               ).existsSync()
               ? FutureBuilder(
-                future: Api().addPhoto(widget.fileImage!),
+                future: Api().modelGen(widget.fileImage!),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data != 'error_from_api') {
@@ -48,7 +48,7 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                       );
                       return childW;
                     } else {
-                      childW = Center(child: Text('попробуйте обновить токен', style: TextStyle(color: Colors.white),));
+                      childW = Center(child: Text('попробуйте обновить токен', style: Theme.of(context).textTheme.bodyMedium));
                     }
                   } else {
                     childW = Center(child: CircularProgressIndicator());
