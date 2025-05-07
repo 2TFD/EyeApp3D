@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:eyeapp3d/core/helpers.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -81,12 +82,12 @@ class Api {
       List<String> pathsFiles = [];
       final responseBody = await response.stream.bytesToString();
       final jsonResponse = json.decode(responseBody);
-      for (int i = 0; i < 3; i++) {
+      for (int i = 0; i < 4; i++) {
         final base64code = jsonResponse[i.toString()];
         final decodetBytes = base64.decode(base64code);
         (decodetBytes);
-        dirToFile =
-            '${directory.path}/${base64code.toString().substring(50, 62)}${i.toString()}'; ////////////
+        String filename = Helpers().getRandomString(25);
+        dirToFile = '${directory.path}/$filename${i.toString()}.jpg'; ////////////
         final fileImage = File(dirToFile);
 
         await fileImage.create(recursive: true);
@@ -99,6 +100,8 @@ class Api {
         pathsFiles.add(fileImage.path);
       }
       print(pathsFiles);
+      Storage().addToListImage(pathsFiles);
+      print(await Storage().getListImage());
       return pathsFiles;
     } else {
       print('Ошибка при отправке файла: ${response.statusCode}');

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:eyeapp3d/core/helpers.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/layers/presentation/ui/image_card.dart';
@@ -70,19 +71,12 @@ class HomeScreen extends StatelessWidget {
               //   },
               // ),
               CupertinoButton(
-                child: Text('api get image'),
-                onPressed: () async {
-                  context.go('/test');
-                },
-              ),
-              CupertinoButton(
-                child: Text('read'),
+                child: Text('getListImage'),
                 onPressed: () async {
                   print(await Storage().getListImage());
                   List<List<String>> list = await Storage().getListImage();
-                  print(list[1].length);
-                  print(list[0]);
-                  print(list[0][0]);
+                  // print(list);
+                  // print(list[0][0]);
                 },
               ),
             ],

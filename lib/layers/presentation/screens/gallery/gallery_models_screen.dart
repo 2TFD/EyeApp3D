@@ -4,20 +4,20 @@ import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/presentation/ui/image_card.dart';
 import 'package:flutter/material.dart';
 
-class GalleryScreen extends StatefulWidget {
-  GalleryScreen({super.key});
+class GalleryModelsScreen extends StatefulWidget {
+  GalleryModelsScreen({super.key});
 
   @override
-  State<GalleryScreen> createState() => _GalleryScreenState();
+  State<GalleryModelsScreen> createState() => _GalleryScreenState();
 }
 
-class _GalleryScreenState extends State<GalleryScreen> {
+class _GalleryScreenState extends State<GalleryModelsScreen> {
   Widget childW = Text('null');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('gallery')),
+      appBar: AppBar(title: Text('gallery models')),
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {});

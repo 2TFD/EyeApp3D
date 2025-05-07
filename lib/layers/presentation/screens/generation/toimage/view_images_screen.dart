@@ -1,5 +1,5 @@
 import 'package:eyeapp3d/layers/data/network/api.dart';
-import 'package:eyeapp3d/layers/presentation/ui/three_image_card.dart';
+import 'package:eyeapp3d/layers/presentation/ui/four_image_card.dart';
 import 'package:flutter/material.dart';
 
 class ViewImagesScreen extends StatefulWidget {
@@ -22,7 +22,7 @@ class _ViewImagesScreenState extends State<ViewImagesScreen> {
         future: Api().imageGen(widget.promt),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            childW = ThreeImageCard(list: snapshot.data!);
+            childW = FourImageCard(list: snapshot.data!);
           } else {
             childW = CircularProgressIndicator();
           }
