@@ -38,46 +38,11 @@ class HomeScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         // example images
-                        Container(color: Colors.amber, height: 50, width: 50),
+                        Container(color: Colors.white, height: 50, width: 50,),
                       ],
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 25),
-              Text('привет!', style: Theme.of(context).textTheme.bodyLarge),
-              Text('username', style: Theme.of(context).textTheme.bodyMedium),
-              SizedBox(height: 40),
-              Text(
-                'твой токен: ',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              // CupertinoButton(
-              //   child: Text('api get image'),
-              //   onPressed: () async {
-              //     await Api().imageGen('car');
-              //   },
-              // ),
-              // CupertinoButton(
-              //   child: Text('read'),
-              //   onPressed: () async {
-              //     print(await Storage().getListPhoto());
-              //   },
-              // ),
-              // CupertinoButton(
-              //   child: Text('del'),
-              //   onPressed: () async {
-              //     Storage().clearListPhoto();
-              //   },
-              // ),
-              CupertinoButton(
-                child: Text('getListImage'),
-                onPressed: () async {
-                  print(await Storage().getListImage());
-                  List<List<String>> list = await Storage().getListImage();
-                  // print(list);
-                  // print(list[0][0]);
-                },
               ),
             ],
           ),
