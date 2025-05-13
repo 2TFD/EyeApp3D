@@ -50,16 +50,16 @@ class SaveDataScreen extends StatelessWidget {
             SizedBox(height: 100),
 
             CupertinoButton(
-              child: Text(
-                'завершить регистрацию',
-                style: TextStyle(color: Colors.white),
-              ),
               color: Colors.grey,
               onPressed: () async {
                 // сохранение данных
                 Storage().setAll(name, token);
                 context.go('/');
               },
+              child: Text(
+                'завершить регистрацию',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
 
             CupertinoButton(

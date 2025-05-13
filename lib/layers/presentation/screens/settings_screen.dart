@@ -41,21 +41,25 @@ class SettingsScreen extends StatelessWidget {
               color: Colors.grey,
               onPressed: () async {
                 Storage().setToken(token);
-                context.go('/');          
+                context.go('/');
               },
               child: Text(
                 'сохранить',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-
-            // CupertinoButton(
-            //   child: Text('прочитать данные'),
-            //   onPressed: () async {
-            //     print(await Storage().getName());
-            //     print(await Storage().getToken());
-            //   },
-            // ),
+            SizedBox(height: 50),
+            IconButton(
+              onPressed: () async {
+                Storage().changeTheme();
+                print(await Storage().getThemeDark());
+              },
+              icon: Icon(Icons.light_mode, size: 30),
+            ),
+            Switch(value: false, onChanged:(value)async{
+              Storage().changeTheme();
+            },),
+            CupertinoSwitch(value: true, onChanged: (e){})
           ],
         ),
       ),

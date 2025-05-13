@@ -10,6 +10,19 @@ class Storage {
     await storage.setStringList('listPathPhoto', []);
     await storage.setBool('isInit', true);
     await storage.setStringList('listPathImage', []);
+    await storage.setBool('themeDark', true);
+  }
+
+  void changeTheme() async {
+    final storage = await _storage;
+    bool? themeDark = await storage.getBool('themeDark');
+    await storage.setBool('themeDark', !themeDark!);
+  }
+
+  Future<bool> getThemeDark() async {
+    final storage = await _storage;
+    final res = await storage.getBool('themeDark');
+    return res!;
   }
 
   Future<bool> getIsInit() async {

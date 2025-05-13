@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:eyeapp3d/main.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -21,6 +22,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   void initState() {
+    Permission.camera.request(); // из main
     super.initState();
     cameraController = CameraController(cameras[0], ResolutionPreset.max);
     cameraController

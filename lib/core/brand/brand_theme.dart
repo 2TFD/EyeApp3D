@@ -36,8 +36,23 @@ class BrandTheme {
       seedColor: Colors.white,
       brightness: Brightness.light,
     ),
-    scaffoldBackgroundColor: Colors.grey,
-    appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: AppBarTheme(backgroundColor: Colors.white, titleTextStyle: TextStyle(color: Colors.black, fontSize: 20)),
+    iconTheme: IconThemeData(color: Colors.black),
+    textTheme: TextTheme(
+      bodyLarge: TextStyle(
+        color: Colors.black,
+        fontSize: 30,
+      ),
+      bodyMedium: TextStyle(
+        color: Colors.black,
+        fontSize: 15
+      ),
+      bodySmall: TextStyle(
+        color: Colors.black,
+        fontSize: 10
+      )
+    ),
   );
 
 }

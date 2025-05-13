@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:eyeapp3d/core/brand/brand_theme.dart';
 import 'package:eyeapp3d/core/routing.dart';
+import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -9,12 +10,12 @@ List<CameraDescription> cameras = [];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Permission.camera.request();
+  // Permission.camera.request();
+  
   try {
     cameras = await availableCameras();
-    print(cameras);
   } on CameraException catch (e) {
-    print('error camera $e');
+    debugPrint('error camera $e');
   }
   runApp(App());
 }
