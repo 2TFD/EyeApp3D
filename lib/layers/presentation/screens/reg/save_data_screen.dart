@@ -12,66 +12,75 @@ class SaveDataScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: Text(
-                'заполните поля ниже',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            SizedBox(height: 60),
-            TextField(
-              onChanged: (value) {
-                name = value;
-              },
-              decoration: InputDecoration(
-                label: Text(
-                  'ваше имя',
-                  style: Theme.of(context).textTheme.bodyMedium,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Column(
+            children: [
+              Center(
+                child: Text(
+                  'fill in the fields below',
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
-            ),
-            SizedBox(height: 60),
-            TextField(
-              onChanged: (value) {
-                token = value;
-              },
-              decoration: InputDecoration(
-                label: Text(
-                  'ваш токен',
-                  style: Theme.of(context).textTheme.bodyMedium,
+              SizedBox(height: 60),
+              TextField(
+                onChanged: (value) {
+                  name = value;
+                },
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  hintText:
+                    'name',
+                  hintStyle: TextStyle(fontSize: 20, color: Colors.grey)
                 ),
               ),
-            ),
-            SizedBox(height: 100),
-
-            CupertinoButton(
-              color: Colors.grey,
-              onPressed: () async {
-                // сохранение данных
-                Storage().setAll(name, token);
-                context.go('/');
-              },
-              child: Text(
-                'завершить регистрацию',
-                style: TextStyle(color: Colors.white),
+              SizedBox(height: 60),
+              TextField(
+                onChanged: (value) {
+                  token = value;
+                },
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  hintText:
+                    'hf_token',
+                  hintStyle: TextStyle(fontSize: 20, color: Colors.grey)
+                ),
               ),
-            ),
-
-            CupertinoButton(
-              child: Text('прочитать данные'),
-              onPressed: () async {
-                print(await Storage().getName());
-                print(await Storage().getToken());
-              },
-            ),
-          ],
+              SizedBox(height: 100),
+      
+              CupertinoButton(
+                color: Colors.white,
+                onPressed: () async {
+                  Storage().setAll(name, token);
+                  context.go('/');
+                },
+                child: Text(
+                  'complete',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+      
+            ],
+          ),
         ),
-      ),
     );
   }
 }

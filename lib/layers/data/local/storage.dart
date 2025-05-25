@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:eyeapp3d/layers/domain/entity/user_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
@@ -11,6 +14,55 @@ class Storage {
     await storage.setBool('isInit', true);
     await storage.setStringList('listPathImage', []);
     await storage.setBool('themeDark', true);
+    await storage.setStringList('messages', []);
+    await storage.setInt('tokens', 1000);
+    await storage.setStringList('listPathMusic', []);
+  }
+
+  Future<UserEntity> getUser() async {
+    String token = await getToken();
+    int tokens = await getTokens();
+    String name = await getName();
+    return UserEntity(token: token, tokens: tokens, name: name);
+  }
+
+  void setZeroTokens() async {
+    final storage = await _storage;
+    await storage.setInt('tokens', 0);
+  }
+
+  void addTokens(int num) async {
+    final storage = await _storage;
+    int? currentTokens = await storage.getInt('tokens');
+    if (currentTokens != null) {
+      int newtokens = currentTokens + num;
+      await storage.setInt('tokens', newtokens);
+    } else {
+      int newtokens = currentTokens! + num;
+      await storage.setInt('tokens', newtokens);
+    }
+  }
+
+  void buyForTokens(int price) async {
+    final storage = await _storage;
+    int? currentTokens = await storage.getInt('tokens');
+    if (currentTokens != null) {
+      int newtokens = currentTokens - price;
+      await storage.setInt('tokens', newtokens);
+    } else {
+      int newtokens = currentTokens! - price;
+      await storage.setInt('tokens', newtokens);
+    }
+  }
+
+  Future<int> getTokens() async {
+    final storage = await _storage;
+    int? tokens = storage.getInt('tokens');
+    if (tokens != null) {
+      return tokens;
+    } else {
+      return 0;
+    }
   }
 
   void changeTheme() async {
@@ -98,8 +150,84 @@ class Storage {
     return listString;
   }
 
+  void addToListMusic(List<String> inputList) async {
+    final storage = await _storage;
+    List<String>? nowList = await storage.getStringList('listPathMusic');
+    if (nowList != null) {
+      int count = nowList.length;
+      inputList.add(count.toString());
+      String stringList = inputList.join(';');
+      nowList.add(stringList);
+      List<String> newList = nowList;
+      await storage.setStringList('listPathMusic', newList);
+    } else {
+      nowList = [];
+      int count = nowList.length;
+      inputList.add(count.toString());
+      String stringList = inputList.join(';');
+      nowList.add(stringList);
+      List<String> newList = nowList;
+      await storage.setStringList('listPathMusic', newList);
+    }
+  }
+
+  Future<List<List<String>>> getListMusic() async {
+    final storage = await _storage;
+    List<String>? list = await storage.getStringList('listPathMusic');
+    List<List<String>> listString =
+        list!.map((e) {
+          return e.split(';');
+        }).toList();
+    return listString;
+  }
+
   void clearListImage() async {
     final storage = await _storage;
     await storage.setStringList('listPathImage', []);
+  }
+
+  void clearListMessages() async {
+    final storage = await _storage;
+    storage.setStringList('messages', []);
+  }
+
+  void addToListMessages(Map<String, dynamic> dataMap) async {
+    final storage = await _storage;
+    List<String>? list = storage.getStringList('messages');
+    final jsonData = jsonEncode(dataMap);
+    if (list != null) {
+      list.add(jsonData);
+      await storage.setStringList('messages', list);
+    } else {
+      await storage.setStringList('messages', []);
+      list!.add(jsonData);
+      await storage.setStringList('messages', list);
+    }
+  }
+
+  Future<List<dynamic>> getListMessages() async {
+    final storage = await _storage;
+    List<String>? list = storage.getStringList('messages');
+    if (list != null) {
+      return list.map((e) {
+        return jsonDecode(e);
+      }).toList();
+    } else {
+      return [];
+    }
+  }
+
+  void changeLastMessage(Map<String, dynamic> dataMap) async {
+    final storage = await _storage;
+    List<String>? list = storage.getStringList('messages');
+    final jsonData = jsonEncode(dataMap);
+    if (list != null) {
+      list.insert(list.length, jsonData);
+      await storage.setStringList('messages', list);
+    } else {
+      await storage.setStringList('messages', []);
+      list!.insert(list.length, jsonData);
+      await storage.setStringList('messages', list);
+    }
   }
 }

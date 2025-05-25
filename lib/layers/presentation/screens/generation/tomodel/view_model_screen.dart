@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ViewModelScreen extends StatefulWidget {
   ViewModelScreen({super.key, required this.fileImage, required this.dirPath});
@@ -31,6 +32,42 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
   Widget build(BuildContext context) {
     String uri;
     Widget childW;
+    Widget positionedDownload = Positioned(
+      top: 15,
+      right: 25,
+      child: IconButton(
+        onPressed: () async {
+          await FilePicker.platform.saveFile(
+            dialogTitle: 'Please select an output file:',
+            fileName: '${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
+            bytes:
+                await File(
+                  '${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
+                ).readAsBytes(),
+          );
+          ;
+        },
+        icon: Icon(Icons.download),
+      ),
+    );
+    Widget positionedShare = Positioned(
+        top: 15,
+        left: 25,
+        child: IconButton(
+          onPressed: () async {
+            final res = await SharePlus.instance.share(
+              ShareParams(
+                files: [
+                  XFile(
+                    '${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
+                  ),
+                ],
+              ),
+            );
+          },
+          icon: Icon(Icons.ios_share),
+        ),
+      );
     return Stack(
       children: [
         Scaffold(
@@ -45,10 +82,17 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                       if (snapshot.hasData) {
                         if (snapshot.data != 'error_from_api') {
                           uri = Uri.file(snapshot.data!).toString();
-                          childW = ModelViewer(
-                            src: uri,
-                            alt: '3d model',
-                            autoRotate: true,
+                          childW = Stack(
+                            children: [
+                              ModelViewer(
+                                src: uri,
+                                alt: '3d model',
+                                autoRotate: true,
+                                backgroundColor: Colors.black,
+                              ),
+                              positionedDownload,
+                              positionedShare,
+                            ],
                           );
                           return childW;
                         } else {
@@ -65,31 +109,22 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                       return childW;
                     },
                   )
-                  : ModelViewer(
-                    src:
-                        Uri.file(
-                          '${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
-                        ).toString(),
-                    alt: '3d model',
-                    autoRotate: true,
-                    backgroundColor: const Color.fromARGB(255, 45, 75, 109),
+                  : Stack(
+                    children: [
+                      ModelViewer(
+                        src:
+                            Uri.file(
+                              '${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
+                            ).toString(),
+                        alt: '3d model',
+                        autoRotate: true,
+                      ),
+                      positionedDownload,
+                      positionedShare,
+                    ],
                   ),
         ),
-        Positioned(
-          top: 70,
-          right: 25,
-          child: IconButton(
-            onPressed: () async {
-              await FilePicker.platform.saveFile(
-                dialogTitle: 'Please select an output file:',
-                fileName: '${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
-                bytes: await File('${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}').readAsBytes()
-              );
-              ;
-            },
-            icon: Icon(Icons.download),
-          ),
-        ),
+        //
       ],
     );
   }

@@ -2,17 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BrandTheme {
-
-
-
-
   ThemeData get darkTheme => ThemeData(
+
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.black,
       brightness: Brightness.dark,
     ),
     scaffoldBackgroundColor: Colors.black,
-    appBarTheme: AppBarTheme(backgroundColor: Colors.black, titleTextStyle: TextStyle(color: Colors.white, fontSize: 20)),
+    appBarTheme: AppBarTheme(backgroundColor: Colors.black, titleTextStyle: TextStyle(color: Colors.white, fontSize: 20), surfaceTintColor: Colors.black),
     iconTheme: IconThemeData(color: Colors.white),
     textTheme: TextTheme(
       bodyLarge: TextStyle(

@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 
 class Api {
   String url = 'http://93.183.81.143:8000';
+  // String url = 'https://refined-alpaca-fully.ngrok-free.app/';
 
   Future<String> modelGen(XFile file) async {
     var uri = Uri.parse('$url/3d');
@@ -17,7 +18,7 @@ class Api {
     request.files.add(
       await http.MultipartFile.fromPath(
         'file', // имя должно совпадать с параметром FastAPI
-        file.path, // путь к твоему файлу
+        file.path,
       ),
     );
     String token = await Storage().getToken();
@@ -25,7 +26,7 @@ class Api {
     request.headers['hf-token'] = token;
     request.headers['Content-Type'] = 'multipart/form-data';
 
-    int fordelInt = file.name.length - 4; // for del '.jpg'
+    // int fordelInt = file.name.length - 4; // for del '.jpg'
     final directory = await getApplicationDocumentsDirectory();
 
     String dirToFile;
@@ -34,28 +35,19 @@ class Api {
     var response = await request.send();
     // Читаем ответ
     if (response.statusCode == 200) {
-      print('Файл успешно отправлен');
-
-      dirToFile = '${directory.path}/${file.name.substring(0, fordelInt)}.glb';
+      dirToFile = '${directory.path}/${file.name.replaceAll('.jpg', '.glb')}';
 
       final responseBody = await response.stream.bytesToString();
-      print(responseBody.length);
 
-      final jsonResponse = json.decode(responseBody); // convert to json
+      final jsonResponse = json.decode(responseBody);
       final datacode = jsonResponse['bytes'] as String;
-      debugPrint(datacode);
       final decodetBytes = base64.decode(datacode);
       (decodetBytes);
 
       final fileModel = File(dirToFile);
 
       await fileModel.create(recursive: true);
-      print('создание файла');
       await fileModel.writeAsBytes(decodetBytes, flush: true);
-      print('создание файла закончено');
-      print(await fileModel.exists());
-      print(await fileModel.length());
-      print(dirToFile);
       return dirToFile;
     } else {
       print('Ошибка при отправке файла: ${response.statusCode}');
@@ -70,7 +62,6 @@ class Api {
     request.headers['accept'] = 'application/json';
     request.headers['promt'] = promt;
     request.headers['token'] = token;
-    print(token);
     final directory = await getApplicationDocumentsDirectory();
     String dirToFile;
 
@@ -87,25 +78,69 @@ class Api {
         final decodetBytes = base64.decode(base64code);
         (decodetBytes);
         String filename = Helpers().getRandomString(25);
-        dirToFile = '${directory.path}/$filename${i.toString()}.jpg'; ////////////
+        dirToFile = '${directory.path}/$filename${i.toString()}.jpg';
         final fileImage = File(dirToFile);
 
         await fileImage.create(recursive: true);
-        print('создание файла');
         await fileImage.writeAsBytes(decodetBytes, flush: true);
-        print('создание файла закончено');
-        print(await fileImage.exists());
-        print(await fileImage.length());
-        print(dirToFile);
         pathsFiles.add(fileImage.path);
       }
-      print(pathsFiles);
       Storage().addToListImage(pathsFiles);
-      print(await Storage().getListImage());
       return pathsFiles;
     } else {
       print('Ошибка при отправке файла: ${response.statusCode}');
       return [];
+    }
+  }
+
+  Future<String> chatGen(String promt) async {
+    var uri = Uri.parse('$url/chat');
+    var request = http.MultipartRequest('POST', uri);
+    String token = await Storage().getToken();
+    request.headers['accept'] = 'application/json';
+    request.headers['promt'] = promt;
+    request.headers['token'] = token;
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      print('Файл успешно отправлен');
+      final responseBody = await response.stream.bytesToString();
+      final jsonResponse = json.decode(responseBody);
+      String res = jsonResponse['0'];
+      return res;
+    } else {
+      print('Ошибка при отправке файла: ${response.statusCode}');
+      return response.statusCode.toString();
+    }
+  }
+
+  Future<String> musicGen(String promt, String style) async {
+    var uri = Uri.parse('$url/music');
+    var request = http.MultipartRequest('POST', uri);
+    String token = await Storage().getToken();
+    request.headers['accept'] = 'application/json';
+    request.headers['promt'] = promt;
+    request.headers['token'] = token;
+    request.headers['style'] = '$style';
+    final directory = await getApplicationDocumentsDirectory();
+
+    String dirToFile;
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      print('Файл успешно отправлен');
+      final responseBody = await response.stream.bytesToString();
+      final jsonResponse = json.decode(responseBody);
+      String base64code = jsonResponse['0'];
+      final decodetBytes = base64.decode(base64code);
+      String filename = Helpers().getRandomString(25);
+      dirToFile = '${directory.path}/$filename.wav';
+      final fileMusic = File(dirToFile);
+      await fileMusic.create(recursive: true);
+      await fileMusic.writeAsBytes(decodetBytes, flush: true);
+      Storage().addToListMusic([promt, style, fileMusic.path]);
+      return fileMusic.path;
+    } else {
+      print('Ошибка при отправке файла: ${response.statusCode}');
+      return dirToFile = 'error_from_api';
     }
   }
 }

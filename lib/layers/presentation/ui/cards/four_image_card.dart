@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gal/gal.dart';
+import 'package:share_plus/share_plus.dart';
 
 class FourImageCard extends StatelessWidget {
   FourImageCard({super.key, required this.list});
@@ -10,7 +11,7 @@ class FourImageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  const snackBar = SnackBar(content: Text('сохранено'));
+    const snackBar = SnackBar(content: Text('сохранено'));
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -39,9 +40,24 @@ class FourImageCard extends StatelessWidget {
                                       child: IconButton(
                                         onPressed: () {
                                           Gal.putImage(list[0]);
-                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(snackBar);
                                         },
                                         icon: Icon(Icons.save_alt, size: 30),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          SharePlus.instance.share(
+                                            ShareParams(
+                                              files: [XFile(list[0])],
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(Icons.ios_share, size: 30),
                                       ),
                                     ),
                                   ],
@@ -80,9 +96,24 @@ class FourImageCard extends StatelessWidget {
                                       child: IconButton(
                                         onPressed: () {
                                           Gal.putImage(list[1]);
-                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(snackBar);
                                         },
                                         icon: Icon(Icons.save_alt, size: 30),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          SharePlus.instance.share(
+                                            ShareParams(
+                                              files: [XFile(list[1])],
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(Icons.ios_share, size: 30),
                                       ),
                                     ),
                                   ],
@@ -124,9 +155,24 @@ class FourImageCard extends StatelessWidget {
                                       child: IconButton(
                                         onPressed: () {
                                           Gal.putImage(list[2]);
-                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(snackBar);
                                         },
                                         icon: Icon(Icons.save_alt, size: 30),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          SharePlus.instance.share(
+                                            ShareParams(
+                                              files: [XFile(list[2])],
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(Icons.ios_share, size: 30),
                                       ),
                                     ),
                                   ],
@@ -165,9 +211,24 @@ class FourImageCard extends StatelessWidget {
                                       child: IconButton(
                                         onPressed: () {
                                           Gal.putImage(list[3]);
-                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(snackBar);
                                         },
                                         icon: Icon(Icons.save_alt, size: 30),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          SharePlus.instance.share(
+                                            ShareParams(
+                                              files: [XFile(list[3])],
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(Icons.ios_share, size: 30),
                                       ),
                                     ),
                                   ],

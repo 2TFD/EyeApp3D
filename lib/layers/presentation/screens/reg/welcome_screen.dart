@@ -15,10 +15,10 @@ class WelcomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Привет!',
+              'Hello!',
               style: Theme.of(context).textTheme.bodyLarge
             ),
-            Text('следуй за инструкциями'),
+            Text('follow the instructions', style: TextStyle(color: Colors.grey),),
             SizedBox(height: 60),
             IconButton(
               onPressed: () {

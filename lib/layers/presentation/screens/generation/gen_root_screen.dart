@@ -25,10 +25,15 @@ class GenRootScreen extends StatelessWidget {
               child: ListTile(title: Text('image gen'), subtitle: Text('promt to images'),)
             ),
 
-            // GestureDetector(
-            //   onTap: () => context.go('/test'),
-            //   child: ListTile(title: Text('qwe'), subtitle: Text('qwe'),)
-            // ),
+            GestureDetector(
+              onTap: () => context.go('/gen/chat'),
+              child: ListTile(title: Text('chat'), subtitle: Text('online chat'),)
+            ),
+
+            GestureDetector(
+              onTap: () => context.go('/gen/music_promt'),
+              child: ListTile(title: Text('music gen'), subtitle: Text('promt to music'),)
+            ),
           ],
         ),
       ),

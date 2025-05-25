@@ -61,9 +61,6 @@ class _CameraScreenState extends State<CameraScreen> {
               SizedBox(height: 30),
               IconButton(onPressed:  () async {
                   image = await cameraController.takePicture();
-                  print(image!.path);
-                  Storage().addToListPhoto(image!.path);
-                  print(await Storage().getListPhoto());
                   context.goNamed('preview', extra: {'par1': image!});
                 }, icon: Icon(Icons.circle_rounded, size: 80,)),
             ],

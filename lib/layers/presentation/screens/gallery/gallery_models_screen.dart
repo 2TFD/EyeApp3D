@@ -37,7 +37,7 @@ class _GalleryScreenState extends State<GalleryModelsScreen> {
                     }).toList(),
               );
             } else {
-              childW = Center(child: CircularProgressIndicator());
+              childW = Center(child: Text('null'));
             }
             return childW;
           },

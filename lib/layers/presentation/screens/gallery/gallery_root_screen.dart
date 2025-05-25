@@ -19,6 +19,10 @@ class GalleryRootScreen extends StatelessWidget {
             child: ListTile(title: Text('images'),),
             onTap: () => context.push('/gallery/galleryimages'),
           ),
+          GestureDetector(
+            child: ListTile(title: Text('music'),),
+            onTap: () => context.push('/gallery/gallerymusic'),
+          ),
         ],
       ),
     );

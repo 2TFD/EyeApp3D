@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:eyeapp3d/core/brand/price_list.dart';
+import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  onPressed: () => context.go('/camera'),
+                  onPressed: () => context.pop(),
                   icon: Icon(
                     Icons.arrow_back_ios_new_rounded,
                     color: Colors.white,
@@ -40,10 +42,24 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 IconButton(
                   onPressed: () async {
                     Directory dir = await getApplicationDocumentsDirectory();
-                    context.goNamed(
+                    int tokens = await Storage().getTokens();
+                    if (tokens >= PriceList().model_gen) {
+                      Storage().addToListPhoto(widget.image.path);
+                      Storage().buyForTokens(PriceList().model_gen);
+                      context.goNamed(
                       'view3d',
                       extra: {'par1': widget.image, 'par2': dir.path},
                     );
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder:
+                            (context) => SimpleDialog(
+                              backgroundColor: Colors.transparent,
+                              title: Center(child: Text('no tokes(')),
+                            ),
+                      );
+                    }
                   },
                   icon: Icon(Icons.check),
                 ),
