@@ -16,70 +16,72 @@ class SaveDataScreen extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(),
-        body: Column(
-            children: [
-              Center(
-                child: Text(
-                  'fill in the fields below',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-              SizedBox(height: 60),
-              TextField(
-                onChanged: (value) {
-                  name = value;
-                },
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(20),
+        body: SingleChildScrollView(
+          child: Column(
+              children: [
+                Center(
+                  child: Text(
+                    'fill in the fields below',
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  hintText:
-                    'name',
-                  hintStyle: TextStyle(fontSize: 20, color: Colors.grey)
                 ),
-              ),
-              SizedBox(height: 60),
-              TextField(
-                onChanged: (value) {
-                  token = value;
-                },
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(20),
+                SizedBox(height: 60),
+                TextField(
+                  onChanged: (value) {
+                    name = value;
+                  },
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    hintText:
+                      'name',
+                    hintStyle: TextStyle(fontSize: 20, color: Colors.grey)
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(20),
+                ),
+                SizedBox(height: 60),
+                TextField(
+                  onChanged: (value) {
+                    token = value;
+                  },
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    hintText:
+                      'hf_token',
+                    hintStyle: TextStyle(fontSize: 20, color: Colors.grey)
                   ),
-                  hintText:
-                    'hf_token',
-                  hintStyle: TextStyle(fontSize: 20, color: Colors.grey)
                 ),
-              ),
-              SizedBox(height: 100),
-      
-              CupertinoButton(
-                color: Colors.white,
-                onPressed: () async {
-                  Storage().setAll(name, token);
-                  context.go('/');
-                },
-                child: Text(
-                  'complete',
-                  style: TextStyle(color: Colors.black),
+                SizedBox(height: 100),
+                
+                CupertinoButton(
+                  color: Colors.white,
+                  onPressed: () async {
+                    Storage().setAll(name, token);
+                    context.go('/');
+                  },
+                  child: Text(
+                    'complete',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
-              ),
-      
-            ],
-          ),
+                
+              ],
+            ),
+        ),
         ),
     );
   }
