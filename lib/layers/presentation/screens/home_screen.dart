@@ -171,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     curve: Curves.easeOutCubic,
                                                   )
                                                   .then((e) {
-                                                    cubit.addTokens(currnetWin);
+                                                    cubit.addTokens(tokensForCase[currnetWin]);
                                                   });
                                               
                                             },
