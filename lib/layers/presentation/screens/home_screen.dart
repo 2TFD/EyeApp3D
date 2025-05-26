@@ -5,6 +5,8 @@ import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/layers/domain/cubit/test_cubit.dart';
 import 'package:eyeapp3d/layers/domain/entity/user_entity.dart';
+import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
+import 'package:eyeapp3d/layers/domain/repository/user_repository.dart';
 import 'package:eyeapp3d/layers/presentation/ui/cards/image_card.dart';
 import 'package:eyeapp3d/layers/presentation/ui/diologs/set_folder_dialog.dart';
 import 'package:file_picker/file_picker.dart';
@@ -187,6 +189,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
+            CupertinoButton(child: Text('1'), onPressed: ()=>UserProvider().updateUser(UserEntity(token: 'qweqwe', tokens: 312, name: 'name'))),
+            CupertinoButton(child: Text('data'), onPressed: ()=>UserProvider().readUser())
           ],
         ),
       ),
