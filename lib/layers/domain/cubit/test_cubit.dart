@@ -1,15 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
-import 'package:eyeapp3d/layers/domain/entity/user_entity.dart';
+import 'package:eyeapp3d/layers/domain/entity/user.dart';
 
 part 'test_state.dart';
 
-class TestCubit extends Cubit<UserEntity> {
-  TestCubit() : super(UserEntity(token: '', tokens: 0, name: ''));
+class TestCubit extends Cubit<User> {
+  TestCubit() : super(User(token: '', tokens: 0, name: ''));
 
   void getUser() async {
-    UserEntity user = await Storage().getUser();
+    User user = await Storage().getUser();
     emit(user);
   }
 

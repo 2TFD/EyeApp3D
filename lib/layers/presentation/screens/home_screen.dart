@@ -4,7 +4,7 @@ import 'package:eyeapp3d/core/helpers.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/layers/domain/cubit/test_cubit.dart';
-import 'package:eyeapp3d/layers/domain/entity/user_entity.dart';
+import 'package:eyeapp3d/layers/domain/entity/user.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:eyeapp3d/layers/domain/repository/user_repository.dart';
 import 'package:eyeapp3d/layers/presentation/ui/cards/image_card.dart';
@@ -189,125 +189,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
-            CupertinoButton(child: Text('1'), onPressed: ()=>UserProvider().updateUser(UserEntity(token: 'qweqwe', tokens: 312, name: 'name'))),
-            CupertinoButton(child: Text('data'), onPressed: ()=>UserProvider().readUser())
           ],
         ),
       ),
     );
   }
 }
-
-
-
-
-// wheel
-// import 'dart:math';
-
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-
-
-
-
-// class HomeScreen extends StatefulWidget {
-//   @override
-//   _WheelOfFortuneState createState() => _WheelOfFortuneState();
-// }
-
-// class _WheelOfFortuneState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-//   late AnimationController _controller;
-//   late Animation<double> _animation;
-
-//   double _currentAngle = 0;
-//   int numSections = 8;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _controller = AnimationController(
-//       vsync: this,
-//       duration: Duration(seconds: 5),
-//     );
-//   }
-
-//   void _spinWheel() {
-//     final random = Random();
-//     final spins = 5 + random.nextInt(5); // от 5 до 9 оборотов
-//     final targetAngle = 2 * pi * spins + (random.nextDouble() * 2 * pi);
-
-//     _animation = Tween<double>(
-//       begin: _currentAngle,
-//       end: _currentAngle + targetAngle,
-//     ).animate(CurvedAnimation(parent: _controller, curve: Curves.decelerate))
-//       ..addListener(() {
-//         setState(() {
-//           _currentAngle = _animation.value;
-//         });
-//       });
-
-//     _controller.forward(from: 0).whenComplete(() {
-//       final resultAngle = _currentAngle % (2 * pi);
-//       final selected = numSections - 1 - (resultAngle / (2 * pi / numSections)).floor();
-//       showDialog(
-//         context: context,
-//         builder: (_) => AlertDialog(
-//           title: Text("Сектор: $selected"),
-//         ),
-//       );
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         CustomPaint(
-//           painter: WheelPainter(numSections: numSections, angle: _currentAngle),
-//           size: Size(300, 300),
-//         ),
-//         ElevatedButton(
-//           onPressed: _spinWheel,
-//           child: Text("Крутить"),
-//         )
-//       ],
-//     );
-//   }
-
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     super.dispose();
-//   }
-// }
-
-// class WheelPainter extends CustomPainter {
-//   final int numSections;
-//   final double angle; // текущий угол поворота
-
-//   WheelPainter({required this.numSections, required this.angle});
-
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     final paint = Paint()..style = PaintingStyle.fill;
-//     final radius = size.width / 2;
-//     final center = Offset(radius, radius);
-
-//     for (int i = 0; i < numSections; i++) {
-//       final sweepAngle = 2 * pi / numSections;
-//       final startAngle = i * sweepAngle + angle;
-//       paint.color = i.isEven ? Colors.orange : Colors.green;
-//       canvas.drawArc(
-//         Rect.fromCircle(center: center, radius: radius),
-//         startAngle,
-//         sweepAngle,
-//         true,
-//         paint,
-//       );
-//     }
-//   }
-
-//   @override
-//   bool shouldRepaint(covariant WheelPainter oldDelegate) =>
-//       oldDelegate.angle != angle;
-// }

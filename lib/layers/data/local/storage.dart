@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:eyeapp3d/layers/domain/entity/user_entity.dart';
+import 'package:eyeapp3d/layers/domain/entity/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
@@ -19,11 +19,11 @@ class Storage {
     await storage.setStringList('listPathMusic', []);
   }
 
-  Future<UserEntity> getUser() async {
+  Future<User> getUser() async {
     String token = await getToken();
     int tokens = await getTokens();
     String name = await getName();
-    return UserEntity(token: token, tokens: tokens, name: name);
+    return User(token: token, tokens: tokens, name: name);
   }
 
   void setZeroTokens() async {

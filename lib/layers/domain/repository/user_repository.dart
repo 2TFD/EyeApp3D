@@ -2,26 +2,21 @@ import 'dart:convert';
 
 import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
-import 'package:eyeapp3d/layers/domain/entity/user_entity.dart';
+import 'package:eyeapp3d/layers/domain/entity/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class UserRepository {
   final _pref = SharedPreferences.getInstance();
 
-  Future<void> updateUser( user) async {
+  Future<void> updateUser(User user) async {
     final pref = await _pref;
-    await pref.setString('user', user.toJson());
+    await pref.setString('user', jsonEncode(user.toMap()));
   }
 
-  Future<void> delUser() async {
-    final pref = await _pref;
-    await pref.setString('user', '');
-  }
-
-  Future<UserEntity> readUser() async {
+  Future<User> readUser() async {
     final pref = await _pref;
     String? user = await pref.getString('user');
-    UserEntity userEntity = UserEntity.fromJson(user!);
+    User userEntity = User.fromMap(jsonDecode(user!));
     return userEntity;
   }
 }
