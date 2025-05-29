@@ -4,6 +4,9 @@ import 'package:camera/camera.dart';
 import 'package:eyeapp3d/core/brand/price_list.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
+import 'package:eyeapp3d/layers/domain/provider/images_provider.dart';
+import 'package:eyeapp3d/layers/domain/provider/model_provider.dart';
+import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -42,14 +45,13 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 IconButton(
                   onPressed: () async {
                     Directory dir = await getApplicationDocumentsDirectory();
-                    int tokens = await Storage().getTokens();
+                    int tokens = await UserProvider().getTokens();
                     if (tokens >= PriceList().model_gen) {
-                      Storage().addToListPhoto(widget.image.path);
-                      Storage().buyForTokens(PriceList().model_gen);
+                      UserProvider().buyTokens(PriceList().model_gen);
                       context.goNamed(
-                      'view3d',
-                      extra: {'par1': widget.image, 'par2': dir.path},
-                    );
+                        'view3d',
+                        extra: {'par1': widget.image, 'par2': dir.path},
+                      );
                     } else {
                       showDialog(
                         context: context,

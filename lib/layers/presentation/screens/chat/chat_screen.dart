@@ -1,6 +1,9 @@
 import 'package:eyeapp3d/core/brand/price_list.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
+import 'package:eyeapp3d/layers/domain/entity/message.dart';
+import 'package:eyeapp3d/layers/domain/provider/message_provider.dart';
+import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -18,17 +21,18 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   void updateChat() async {
-    List<dynamic> list = await Storage().getListMessages();
+    // List<dynamic> list = await Storage().getListMessages();
+    List<Message> list = await MessageProvider().getListMessages();
     widget.messages =
         list.map((e) {
-          bool user = e['user'];
+          bool user = e.user;
           return Align(
             alignment: user ? Alignment.centerRight : Alignment.centerRight,
             child: Container(
               margin: EdgeInsets.only(bottom: 10),
               padding: EdgeInsets.all(5),
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Text(e['message'], style: TextStyle(color: Colors.white)),
+              child: Text(e.message, style: TextStyle(color: Colors.white)),
             ),
           );
         }).toList();
@@ -53,7 +57,8 @@ class _ChatScreenState extends State<ChatScreen> {
               Spacer(),
               IconButton(
                 onPressed: () async {
-                  Storage().clearListMessages();
+                  // Storage().clearListMessages();
+                  MessageProvider().delListMessages();
                   updateChat();
                 },
                 icon: Icon(Icons.clear_rounded),
@@ -90,21 +95,31 @@ class _ChatScreenState extends State<ChatScreen> {
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
                         suffixIcon: IconButton(
                           onPressed: () async {
-                            int tokens = await Storage().getTokens();
+                            // int tokens = await Storage().getTokens();
+                            int tokens = await UserProvider().getTokens();
                             if (tokens >= PriceList().chat_gen) {
-                              Storage().buyForTokens(PriceList().chat_gen);
+                              // Storage().buyForTokens(PriceList().chat_gen);
+                              UserProvider().buyTokens(PriceList().chat_gen);
                               String message = widget.textFiledcontroll.text;
-                            widget.textFiledcontroll.text = '';
-                            Storage().addToListMessages({
-                              'user': true,
-                              'message': message,
-                            });
-                            updateChat();
-                            Storage().addToListMessages({
-                              'user': false,
-                              'message': await Api().chatGen(message.replaceAll('\n', ' ')),
-                            });
-                            updateChat();
+                              widget.textFiledcontroll.text = '';
+                              MessageProvider().saveMessage(
+                                Message(
+                                  message: message,
+                                  time: DateTime.now(),
+                                  user: true,
+                                ),
+                              );
+                              updateChat();
+                              // Storage().addToListMessages({
+                              //   'user': false,
+                              //   'message': await Api().chatGen(
+                              //     message.replaceAll('\n', ' '),
+                              //   ),
+                              // });
+                              MessageProvider().newMessage(
+                                message.replaceAll('\n', ' '),
+                              );
+                              updateChat();
                             } else {
                               showDialog(
                                 context: context,

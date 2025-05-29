@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:eyeapp3d/layers/data/local/storage.dart';
+import 'package:eyeapp3d/layers/domain/entity/images.dart';
+import 'package:eyeapp3d/layers/domain/provider/images_provider.dart';
 import 'package:eyeapp3d/layers/presentation/ui/cards/four_image_card.dart';
 import 'package:eyeapp3d/layers/presentation/ui/cards/image_card.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +27,20 @@ class _GalleryScreenState extends State<GalleryImagesScreen> {
           return Future<void>.delayed(Duration(seconds: 1));
         },
         child: FutureBuilder(
-          future: Storage().getListImage(),
+          // future: Storage().getListImage(),
+          future: ImagesProvider().getListImages(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               childW = GridView.count(
                 crossAxisCount: 1,
                 children:
-                    (snapshot.data as List<List<String>>).map((e) {
-                      return Center(child: FourImageCard(list: e));
+                    (snapshot.data as List<Images>).map((e) {
+                      return Center(child: FourImageCard(list: [
+                        e.imagePathOne,
+                        e.imagePathTwo,
+                        e.imagePathThree,
+                        e.imagePathFour,
+                      ]));
                     }).toList(),
               );
             } else {

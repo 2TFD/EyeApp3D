@@ -1,4 +1,5 @@
 import 'package:eyeapp3d/layers/data/local/storage.dart';
+import 'package:eyeapp3d/layers/domain/provider/track_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +22,8 @@ class _GalleryMusicScreenState extends State<GalleryMusicScreen> {
           return Future<void>.delayed(Duration(seconds: 1));
         },
         child: FutureBuilder(
-          future: Storage().getListMusic(),
+          // future: Storage().getListMusic(),
+          future: TrackProvider().getListTracks(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return SingleChildScrollView(
@@ -33,15 +35,15 @@ class _GalleryMusicScreenState extends State<GalleryMusicScreen> {
                               () => context.push(
                                 '/gen/music_promt/music_view',
                                 extra: <String, dynamic>{
-                                  'promt': e[0],
-                                  'style': e[1],
-                                  'filePath': e[2],
-                                  'indexTrack': e[3],
+                                  'promt': e.promt,
+                                  'style': e.style,
+                                  'filePath': e.trackPath,
+                                  'indexTrack': e,
                                 },
                               ),
                           child: ListTile(
-                            title: Text(e[0]),
-                            subtitle: Text(e[1]),
+                            title: Text(e.promt),
+                            subtitle: Text(e.style),
                           ),
                         );
                       }).toList(),

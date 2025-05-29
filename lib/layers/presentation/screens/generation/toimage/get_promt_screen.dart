@@ -1,5 +1,6 @@
 import 'package:eyeapp3d/core/brand/price_list.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
+import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -41,9 +42,11 @@ class GetPromtScreen extends StatelessWidget {
                   style: TextStyle(color: Colors.black),
                 ),
                 onPressed: () async {
-                  int tokens = await Storage().getTokens();
+                  // int tokens = await Storage().getTokens();
+                  int tokens = await UserProvider().getTokens();
                   if (tokens >= PriceList().image_gen) {
-                    Storage().buyForTokens(PriceList().image_gen);
+                    // Storage().buyForTokens(PriceList().image_gen);
+                    UserProvider().buyTokens(PriceList().image_gen);
                     context.go('/gen/getpromt/viewimage', extra: promt);
                   } else {
                     showDialog(

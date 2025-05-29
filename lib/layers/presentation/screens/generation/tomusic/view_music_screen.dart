@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
+import 'package:eyeapp3d/layers/domain/provider/track_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +72,6 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
     playList = [AudioSource.file(widget.filePath)];
 
     if (widget.filePath != 'null') {
-      // selectTrack(0);
       player.positionStream.listen((p) {
         setState(() => position = p);
       });
@@ -113,7 +113,8 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
       body:
           (widget.filePath == 'null' || widget.indexTrack == 'null')
               ? FutureBuilder(
-                future: Api().musicGen(widget.promt, widget.style),
+                // future: Api().musicGen(widget.promt, widget.style),
+                future: TrackProvider().newTrack(widget.promt, widget.style),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     childW = Center(
@@ -144,7 +145,8 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                 },
               )
               : FutureBuilder(
-                future: Storage().getListMusic(),
+                // future: Storage().getListMusic(),
+                future: TrackProvider().getListTracks(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     PageController pageController = PageController(
@@ -152,7 +154,7 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                     );
                     playList =
                         snapshot.data!.map((e) {
-                          return AudioSource.file(e[2]);
+                          return AudioSource.file(e.trackPath);
                         }).toList();
                     childW = Center(
                       child: Column(
@@ -182,14 +184,14 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              snapshot.data![index][0],
+                                              snapshot.data![index].promt,
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 20,
                                               ),
                                             ),
                                             Text(
-                                              snapshot.data![index][1],
+                                              snapshot.data![index].style,
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 14,
@@ -209,8 +211,8 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                             children: [
                               Column(
                                 children: [
-                                  Text(snapshot.data![currentIndex][0]),
-                                  Text(snapshot.data![currentIndex][1]),
+                                  Text(snapshot.data![currentIndex].promt),
+                                  Text(snapshot.data![currentIndex].style),
                                 ],
                               ),
                               IconButton(
@@ -221,7 +223,7 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                                     fileName: 'track.wav',
                                     bytes:
                                         await File(
-                                          snapshot.data![currentIndex][2],
+                                          snapshot.data![currentIndex].trackPath,
                                         ).readAsBytes(),
                                   );
                                 },
@@ -232,7 +234,7 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                                   await SharePlus.instance.share(
                                     ShareParams(
                                       files: [
-                                        XFile(snapshot.data![currentIndex][2]),
+                                        XFile(snapshot.data![currentIndex].trackPath),
                                       ],
                                     ),
                                   );

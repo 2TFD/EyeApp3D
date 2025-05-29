@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:eyeapp3d/layers/data/local/storage.dart';
+import 'package:eyeapp3d/layers/domain/entity/model.dart';
+import 'package:eyeapp3d/layers/domain/provider/model_provider.dart';
 import 'package:eyeapp3d/layers/presentation/ui/cards/image_card.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +26,8 @@ class _GalleryScreenState extends State<GalleryModelsScreen> {
           return Future<void>.delayed(Duration(seconds: 1));
         },
         child: FutureBuilder(
-          future: Storage().getListPhoto(),
+          // future: Storage().getListPhoto(),
+          future: ModelProvider().getListModels(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               childW = GridView.count(
@@ -32,8 +35,8 @@ class _GalleryScreenState extends State<GalleryModelsScreen> {
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 2,
                 children:
-                    (snapshot.data as List<String>).map((e) {
-                      return ImageCard(fileImage: File(e));
+                    (snapshot.data as List<Model>).map((e) {
+                      return ImageCard(fileImage: File(e.imagePath));
                     }).toList(),
               );
             } else {

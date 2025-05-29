@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:eyeapp3d/core/helpers.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
+import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -21,7 +22,8 @@ class Api {
         file.path,
       ),
     );
-    String token = await Storage().getToken();
+    // String token = await Storage().getToken();
+    String token = await UserProvider().getToken();
     request.headers['accept'] = 'application/json';
     request.headers['hf-token'] = token;
     request.headers['Content-Type'] = 'multipart/form-data';
@@ -58,7 +60,7 @@ class Api {
   Future<List<String>> imageGen(String promt) async {
     var uri = Uri.parse('$url/image');
     var request = http.MultipartRequest('POST', uri);
-    String token = await Storage().getToken();
+    String token = await UserProvider().getToken();
     request.headers['accept'] = 'application/json';
     request.headers['promt'] = promt;
     request.headers['token'] = token;
@@ -85,7 +87,7 @@ class Api {
         await fileImage.writeAsBytes(decodetBytes, flush: true);
         pathsFiles.add(fileImage.path);
       }
-      Storage().addToListImage(pathsFiles);
+      // Storage().addToListImage(pathsFiles);
       return pathsFiles;
     } else {
       print('Ошибка при отправке файла: ${response.statusCode}');
@@ -96,7 +98,8 @@ class Api {
   Future<String> chatGen(String promt) async {
     var uri = Uri.parse('$url/chat');
     var request = http.MultipartRequest('POST', uri);
-    String token = await Storage().getToken();
+    // String token = await Storage().getToken();
+    String token = await UserProvider().getToken();
     request.headers['accept'] = 'application/json';
     request.headers['promt'] = promt;
     request.headers['token'] = token;
@@ -116,7 +119,8 @@ class Api {
   Future<String> musicGen(String promt, String style) async {
     var uri = Uri.parse('$url/music');
     var request = http.MultipartRequest('POST', uri);
-    String token = await Storage().getToken();
+    // String token = await Storage().getToken();
+    String token = await UserProvider().getToken();
     request.headers['accept'] = 'application/json';
     request.headers['promt'] = promt;
     request.headers['token'] = token;
@@ -136,7 +140,7 @@ class Api {
       final fileMusic = File(dirToFile);
       await fileMusic.create(recursive: true);
       await fileMusic.writeAsBytes(decodetBytes, flush: true);
-      Storage().addToListMusic([promt, style, fileMusic.path]);
+      // Storage().addToListMusic([promt, style, fileMusic.path]);
       return fileMusic.path;
     } else {
       print('Ошибка при отправке файла: ${response.statusCode}');
@@ -144,5 +148,3 @@ class Api {
     }
   }
 }
-
-

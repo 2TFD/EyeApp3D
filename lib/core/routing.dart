@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
+import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:eyeapp3d/layers/presentation/screens/gallery/gallery_music_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/generation/tomodel/camera_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/chat/chat_screen.dart';
@@ -29,9 +30,11 @@ class Routing {
     // initialLocation: '/gen/music_promt',
     initialLocation: '/',
     redirect: (context, state) async {
-      bool isInit = await Storage().getIsInit();
+      // bool isInit = await Storage().getIsInit();
+      bool isInit = await UserProvider().getIsInit();
       if (!isInit) {
-        Storage().initStorage();
+        // Storage().initStorage();
+        await UserProvider().setIsInit(true);
         return '/reg';
       } else {
         return null;
@@ -127,7 +130,8 @@ class Routing {
                               filePath:
                                   (state.extra
                                       as Map<String, dynamic>)['filePath'],
-                              indexTrack: (state.extra
+                              indexTrack:
+                                  (state.extra
                                       as Map<String, dynamic>)['indexTrack'],
                             ),
                       ),
@@ -154,7 +158,7 @@ class Routing {
                   GoRoute(
                     path: 'gallerymusic',
                     builder: (context, state) => GalleryMusicScreen(),
-                  )
+                  ),
                 ],
               ),
             ],

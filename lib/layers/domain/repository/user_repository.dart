@@ -16,7 +16,10 @@ abstract class UserRepository {
   Future<User> readUser() async {
     final pref = await _pref;
     String? user = await pref.getString('user');
-    User userEntity = User.fromMap(jsonDecode(user!));
-    return userEntity;
+    if (user != null) {
+      return User.fromMap(jsonDecode(user));
+    } else {
+      return User(token: 'token', tokens: 1000, name: 'name', isInit: false);
+    }
   }
 }

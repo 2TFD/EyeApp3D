@@ -8,33 +8,35 @@ abstract class ModelRepository {
   final _pref = SharedPreferences.getInstance();
 
   Future<Model> newModel(XFile image) async {
-  final model = await Api().modelGen(image); 
-    return Model(modelPath: model, imagePath: image.path);
+    final modelPath = await Api().modelGen(image);
+    Model model = Model(modelPath: modelPath, imagePath: image.path);
+    saveModel(model);
+    return model;
   }
 
-  Future<void> saveModel(Model model)async{
+  Future<void> saveModel(Model model) async {
     final pref = await _pref;
     List<String>? models = await pref.getStringList('models');
-    if(models != null){
+    if (models != null) {
       models.add(jsonEncode(model.toMap()));
-      pref.setStringList('models', models); 
-    }else{
+      pref.setStringList('models', models);
+    } else {
       models = [];
       models.add(jsonEncode(model.toMap()));
-      pref.setStringList('models', models); 
+      pref.setStringList('models', models);
     }
   }
 
-  Future<List<Model>> getListModels()async{
+  Future<List<Model>> getListModels() async {
     final pref = await _pref;
     List<String>? models = await pref.getStringList('models');
-    return models!.map((e){
-      return  Model.fromMap(jsonDecode(e));
-    }).toList(); 
+    return models!.map((e) {
+      return Model.fromMap(jsonDecode(e));
+    }).toList();
   }
 
-  Future<void> delListModels()async{
+  Future<void> delListModels() async {
     final pref = await _pref;
     pref.setStringList('models', []);
   }
-} 
+}

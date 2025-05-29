@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
+import 'package:eyeapp3d/layers/domain/provider/model_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,18 +16,13 @@ import 'package:share_plus/share_plus.dart';
 class ViewModelScreen extends StatefulWidget {
   ViewModelScreen({super.key, required this.fileImage, required this.dirPath});
 
-  XFile? fileImage;
-  String? dirPath;
+  XFile fileImage;
+  String dirPath;
   @override
   State<ViewModelScreen> createState() => _ViewModelScreenState();
 }
 
 class _ViewModelScreenState extends State<ViewModelScreen> {
-  @override
-  void initState() {
-    print(widget.dirPath);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +38,7 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
             fileName: '${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
             bytes:
                 await File(
-                  '${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
+                  '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
                 ).readAsBytes(),
           );
           ;
@@ -59,7 +55,7 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
               ShareParams(
                 files: [
                   XFile(
-                    '${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
+                    '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
                   ),
                 ],
               ),
@@ -77,11 +73,12 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                     '${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
                   ).existsSync()
                   ? FutureBuilder(
-                    future: Api().modelGen(widget.fileImage!),
+                    // future: Api().modelGen(widget.fileImage!),
+                    future: ModelProvider().newModel(widget.fileImage!),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data != 'error_from_api') {
-                          uri = Uri.file(snapshot.data!).toString();
+                          uri = Uri.file(snapshot.data!.modelPath).toString();
                           childW = Stack(
                             children: [
                               ModelViewer(
@@ -114,7 +111,7 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                       ModelViewer(
                         src:
                             Uri.file(
-                              '${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
+                              '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
                             ).toString(),
                         alt: '3d model',
                         autoRotate: true,

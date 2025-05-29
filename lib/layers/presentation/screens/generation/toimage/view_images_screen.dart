@@ -1,4 +1,5 @@
 import 'package:eyeapp3d/layers/data/network/api.dart';
+import 'package:eyeapp3d/layers/domain/provider/images_provider.dart';
 import 'package:eyeapp3d/layers/presentation/ui/cards/four_image_card.dart';
 import 'package:flutter/material.dart';
 
@@ -19,10 +20,16 @@ class _ViewImagesScreenState extends State<ViewImagesScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder(
-        future: Api().imageGen(widget.promt),
+        // future: Api().imageGen(widget.promt),
+        future: ImagesProvider().newImages(widget.promt),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            childW = FourImageCard(list: snapshot.data!);
+            childW = FourImageCard(list: [
+              snapshot.data!.imagePathOne,
+              snapshot.data!.imagePathTwo,
+              snapshot.data!.imagePathThree,
+              snapshot.data!.imagePathFour,
+            ]);
           } else {
             childW = CircularProgressIndicator();
           }

@@ -1,6 +1,7 @@
 import 'package:eyeapp3d/core/brand/brand_theme.dart';
 import 'package:eyeapp3d/core/brand/price_list.dart';
 import 'package:eyeapp3d/layers/data/local/storage.dart';
+import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -59,18 +60,18 @@ class MusicPromtScreen extends StatelessWidget {
                         styleList.map((e) {
                           return GestureDetector(
                             onTap: () async {
-                              int tokens = await Storage().getTokens();
+                              int tokens = await UserProvider().getTokens();
                               if (tokens >= PriceList().music_gen) {
-                                Storage().buyForTokens(PriceList().music_gen);
+                                UserProvider().buyTokens(PriceList().music_gen);
                                 context.push(
-                                '/gen/music_promt/music_view',
-                                extra: <String, dynamic>{
-                                  'promt': inputcontroller.text,
-                                  'style': e,
-                                  'filePath': 'null',
-                                  'indexTrack': 'null',
-                                },
-                              );
+                                  '/gen/music_promt/music_view',
+                                  extra: <String, dynamic>{
+                                    'promt': inputcontroller.text,
+                                    'style': e,
+                                    'filePath': 'null',
+                                    'indexTrack': 'null',
+                                  },
+                                );
                               } else {
                                 showDialog(
                                   context: context,
