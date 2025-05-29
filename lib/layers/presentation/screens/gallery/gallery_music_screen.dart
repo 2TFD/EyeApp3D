@@ -1,4 +1,3 @@
-import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/domain/provider/track_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +37,7 @@ class _GalleryMusicScreenState extends State<GalleryMusicScreen> {
                                   'promt': e.promt,
                                   'style': e.style,
                                   'filePath': e.trackPath,
-                                  'indexTrack': e,
+                                  'indexTrack': e.indexTrack,
                                 },
                               ),
                           child: ListTile(

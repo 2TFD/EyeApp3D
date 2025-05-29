@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:eyeapp3d/core/helpers.dart';
-import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +10,6 @@ import 'package:path_provider/path_provider.dart';
 
 class Api {
   String url = 'http://93.183.81.143:8000';
-  // String url = 'https://refined-alpaca-fully.ngrok-free.app/';
 
   Future<String> modelGen(XFile file) async {
     var uri = Uri.parse('$url/3d');

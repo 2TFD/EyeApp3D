@@ -15,16 +15,10 @@ abstract class MessageRepository {
   }
 
   Future<void> saveMessage(Message message) async {
-    print('qwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
     final pref = await _pref;
-    List<String>? messages = await pref.getStringList('messages');
-    print(messages);
-    if (messages != null) {
-      messages.add(jsonEncode(message.toMap()));
-      pref.setStringList('models', messages);
-    } else {
-      pref.setStringList('messages', [jsonEncode(message.toMap())]);
-    }
+    List<String>? messages = pref.getStringList('messages');
+    messages!.add(jsonEncode(message.toMap()));
+    pref.setStringList('messages', messages);
   }
 
   Future<List<Message>> getListMessages() async {
@@ -32,11 +26,10 @@ abstract class MessageRepository {
     List<String>? messages = await pref.getStringList('messages');
     if (messages != null) {
       return messages.map((e) {
-        print(e);
-        print(Message.fromMap(jsonDecode(e)));
         return Message.fromMap(jsonDecode(e));
       }).toList();
     } else {
+      pref.setStringList('messages', []);
       return [];
     }
   }

@@ -17,8 +17,9 @@ class RoutingScreen extends StatelessWidget {
         unselectedItemColor: Colors.grey[800],
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.photo_filter_rounded), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.add, size: 30,), label: ''),
+          // BottomNavigationBarItem(icon: Icon(Icons.photo_filter_rounded), label: ''),
+          BottomNavigationBarItem(icon: Icon(CupertinoIcons.folder), label: ''),
         ],
         currentIndex: statefulNavigationShell.currentIndex,
         onTap: (index)=>statefulNavigationShell.goBranch(

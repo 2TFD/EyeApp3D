@@ -9,7 +9,8 @@ abstract class TrackRepository {
 
   Future<Track> newTrack(String promt, String style) async {
     String? trackPath = await Api().musicGen(promt, style);
-    Track track = Track(promt: promt, style: style, trackPath: trackPath);
+    List<Track> listTrack = await getListTracks();
+    Track track = Track(promt: promt, style: style, trackPath: trackPath, indexTrack: listTrack.length+1);
     saveTrack(track);
     return track;
   }

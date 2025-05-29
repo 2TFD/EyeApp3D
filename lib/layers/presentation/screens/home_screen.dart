@@ -1,14 +1,12 @@
 import 'dart:math';
 
 import 'package:eyeapp3d/core/helpers.dart';
-import 'package:eyeapp3d/layers/data/local/storage.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/layers/domain/cubit/test_cubit.dart';
 import 'package:eyeapp3d/layers/domain/entity/user.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:eyeapp3d/layers/domain/repository/user_repository.dart';
 import 'package:eyeapp3d/layers/presentation/ui/cards/image_card.dart';
-import 'package:eyeapp3d/layers/presentation/ui/diologs/set_folder_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +23,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final cubit = TestCubit();
+
+
   List<int> tokensForCase = [0];
   int currnetWin = 0;
   void setRandomList() {
@@ -38,12 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
     print(tokensForCase);
   }
 
+
   @override
   void initState() {
     final subscription = cubit.stream.listen((e) {
       setState(() {});
     });
     cubit.getUser();
+    
     super.initState();
   }
 
@@ -117,7 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: TextStyle(color: Colors.black),
                               ),
                               onPressed: () {
-                                // cubit.addTokens(100);
                                 showDialog(
                                   context: context,
                                   builder:
@@ -129,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             width: 300,
                                             child: Expanded(
                                               child: PageView.builder(
-                                                itemCount: 10000000,
+                                                itemCount: 101,
                                                 controller: pageController,
                                                 onPageChanged: (value) {
                                                   currnetWin = value;
@@ -156,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           CupertinoButton(
                                             color: Colors.white,
                                             child: Text(
-                                              'RUN',
+                                              'GET RANDOM TOKENS',
                                               style: TextStyle(
                                                 color: Colors.black,
                                               ),
@@ -173,9 +174,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     curve: Curves.easeOutCubic,
                                                   )
                                                   .then((e) {
-                                                    cubit.addTokens(tokensForCase[currnetWin]);
+                                                    cubit.addTokens(
+                                                      tokensForCase[currnetWin],
+                                                    );
                                                   });
-                                              
                                             },
                                           ),
                                         ],
