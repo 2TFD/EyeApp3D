@@ -35,6 +35,7 @@ class FourImageCard extends StatelessWidget {
                               child: Center(
                                 child: Stack(
                                   children: [
+                                    // Image.file(File.fromUri(Uri.parse(list[0]))),
                                     Image.file(File(list[0])),
                                     Positioned(
                                       child: IconButton(

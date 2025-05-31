@@ -24,7 +24,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final cubit = TestCubit();
 
-
   List<int> tokensForCase = [0];
   int currnetWin = 0;
   void setRandomList() {
@@ -38,14 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
     print(tokensForCase);
   }
 
-
   @override
   void initState() {
     final subscription = cubit.stream.listen((e) {
       setState(() {});
     });
     cubit.getUser();
-    
+
     super.initState();
   }
 
