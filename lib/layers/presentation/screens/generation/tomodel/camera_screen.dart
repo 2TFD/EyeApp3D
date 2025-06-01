@@ -21,9 +21,9 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   void initState() {
-    Permission.camera.request(); // из main
+    Permission.camera.request();
     super.initState();
-    cameraController = CameraController(cameras[0], ResolutionPreset.max);
+    cameraController = CameraController(cameras[0], ResolutionPreset.max, enableAudio: false);
     cameraController
         .initialize()
         .then((_) {

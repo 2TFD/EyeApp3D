@@ -6,8 +6,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class MessageRepository {
   final _pref = SharedPreferences.getInstance();
 
-  Future<Message> newMessage(String promt) async {
-    String? message = await Api().chatGen(promt);
+  Future<bool> getThinking() async {
+    final pref = await _pref;
+    final res = await pref.getBool('thinking');
+    return res ?? false;
+  }
+
+  Future<void> changeThinking() async {
+    bool isThinking = await getThinking();
+    final pref = await _pref;
+    await pref.setBool('thinking', !isThinking);
+  }
+
+  Future<Message> newMessage(String promt, bool isThinling) async {
+    String? message = await Api().chatGen(promt, isThinling);
     DateTime time = DateTime.now();
     Message mes = Message(message: message, time: time, user: false);
     saveMessage(mes);

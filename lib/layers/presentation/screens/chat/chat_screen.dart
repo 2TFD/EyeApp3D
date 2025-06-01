@@ -12,7 +12,6 @@ import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({super.key});
-
   List<Widget> messages = [];
   final textFiledcontroll = TextEditingController();
   bool loading = false;
@@ -21,23 +20,28 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  bool isThinking = false;
+  void changeThinking() async {
+    isThinking = !isThinking;
+    await MessageProvider().changeThinking();
+  }
+
   void updateChat() async {
     List<Message> list = await MessageProvider().getListMessages();
     widget.messages =
         list.map((e) {
           bool user = e.user;
           return Align(
-            alignment: user ? Alignment.centerRight : Alignment.centerRight,
+            alignment: user ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
               margin: EdgeInsets.only(bottom: 10),
               padding: EdgeInsets.all(5),
-              // decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
               child: Column(
                 children: [
                   Text(
-                        '${e.time.hour}:${e.time.minute}', 
-                        style: TextStyle(fontSize: 10, color: Colors.white),
-                      ),
+                    '${e.time.hour}:${e.time.minute}',
+                    style: TextStyle(fontSize: 10, color: Colors.white),
+                  ),
                   Text(e.message, style: TextStyle(color: Colors.white)),
                 ],
               ),
@@ -63,12 +67,53 @@ class _ChatScreenState extends State<ChatScreen> {
             children: [
               Text('chat'),
               Spacer(),
-              IconButton(
-                onPressed: () async {
-                  MessageProvider().delListMessages();
-                  updateChat();
+              PopupMenuButton(
+                color: Colors.black,
+                surfaceTintColor: Colors.white,
+                onOpened: () async {
+                  isThinking = await MessageProvider().getThinking();
                 },
-                icon: Icon(Icons.clear_rounded),
+                itemBuilder:
+                    (context) => [
+                      PopupMenuItem(
+                        enabled: false,
+                        child: Row(
+                          children: [
+                            Text('show thinking', style: TextStyle(color: Colors.white),),
+                            Spacer(),
+                            StatefulBuilder(
+                              builder:
+                                  (context, setState) => Switch(
+                                    value: isThinking,
+                                    activeColor: Colors.white,
+                                    onChanged: (bool value) async {
+                                      setState(() {
+                                        changeThinking();
+                                      });
+                                      this.setState(() {});
+                                    },
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        enabled: false,
+                        child: Row(
+                          children: [
+                            Text('clean chat', style: TextStyle(color: Colors.white),),
+                            Spacer(),
+                            IconButton(
+                              onPressed: () async {
+                                MessageProvider().delListMessages();
+                                updateChat();
+                              },
+                              icon: Icon(Icons.clear_rounded),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
               ),
             ],
           ),
@@ -100,45 +145,51 @@ class _ChatScreenState extends State<ChatScreen> {
                           borderSide: BorderSide(color: Colors.white),
                         ),
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        suffixIcon: 
-                        widget.loading
-                        ?
-                        CupertinoActivityIndicator()
-                        :
-                        IconButton(
-                          onPressed: () async {
-                            int tokens = await UserProvider().getTokens();
-                            if (tokens >= PriceList().chat_gen) {
-                              UserProvider().buyTokens(PriceList().chat_gen);
-                              String message = widget.textFiledcontroll.text;
-                              widget.textFiledcontroll.text = '';
-                              MessageProvider().saveMessage(
-                                Message(
-                                  message: message,
-                                  time: DateTime.now(),
-                                  user: true,
+                        suffixIcon:
+                            widget.loading
+                                ? CupertinoActivityIndicator()
+                                : IconButton(
+                                  onPressed: () async {
+                                    int tokens =
+                                        await UserProvider().getTokens();
+                                    if (tokens >= PriceList().chat_gen) {
+                                      UserProvider().buyTokens(
+                                        PriceList().chat_gen,
+                                      );
+                                      String message =
+                                          widget.textFiledcontroll.text;
+                                      widget.textFiledcontroll.text = '';
+                                      MessageProvider().saveMessage(
+                                        Message(
+                                          message: message,
+                                          time: DateTime.now(),
+                                          user: true,
+                                        ),
+                                      );
+                                      widget.loading = true;
+                                      updateChat();
+                                      await MessageProvider().newMessage(
+                                        message.replaceAll('\n', ' '),
+                                        isThinking,
+                                      );
+                                      widget.loading = false;
+                                      updateChat();
+                                    } else {
+                                      showDialog(
+                                        context: context,
+                                        builder:
+                                            (context) => SimpleDialog(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              title: Center(
+                                                child: Text('no tokes('),
+                                              ),
+                                            ),
+                                      );
+                                    }
+                                  },
+                                  icon: Icon(Icons.send_sharp),
                                 ),
-                              );
-                              widget.loading = true;
-                              updateChat();
-                              await MessageProvider().newMessage(
-                                message.replaceAll('\n', ' '),
-                              );
-                              widget.loading = false;
-                              updateChat();
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder:
-                                    (context) => SimpleDialog(
-                                      backgroundColor: Colors.transparent,
-                                      title: Center(child: Text('no tokes(')),
-                                    ),
-                              );
-                            }
-                          },
-                          icon: Icon(Icons.send_sharp),
-                        ),
                         hintText: 'enter promt',
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 25),
                       ),

@@ -23,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final cubit = TestCubit();
-
+  bool light = true;
   List<int> tokensForCase = [0];
   int currnetWin = 0;
   void setRandomList() {
