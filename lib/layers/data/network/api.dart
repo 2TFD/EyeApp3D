@@ -85,6 +85,50 @@ class Api {
   }
 
 
+  // Future<Stream<String>> chatGen(String promt, bool isThinking) async {
+  //   String token = await UserProvider().getToken();
+  //   final headers = {
+  //     'Authorization': 'Bearer $token',
+  //     'Content-Type': 'application/json',
+  //   };
+  //   final data =
+  //       '{"messages": [{"role": "user","content": "$promt"}],"model": "qwen-3-32b","stream": false}';
+  //   final url = Uri.parse(
+  //     'https://router.huggingface.co/cerebras/v1/chat/completions',
+  //   );
+  //   final res = await http.post(url, headers: headers, body: data);
+  //   final status = res.statusCode;
+  //   if (status != 200) throw Exception('http.post error: statusCode= $status');
+    
+  //   final response = jsonDecode(res.body);
+  //   List<String> listResponse = response['choices'][0]['message']['content']
+  //       .split('</think>');
+  //   // return isThinking
+  //   //     ? '${listResponse[0]} <think end>\n ${listResponse[1]}'
+  //   //     : listResponse[1];
+  //   return Stream.empty();
+  // } 
+
+
+  /// 0.1 get chat gen
+  Future<dynamic> _chatGet(Map<dynamic, dynamic> body) async {
+    return await http.post(Uri.parse(
+    '{{baseurl}}/cerebras/v1/chat/completions',
+      
+    ), headers: {
+      'Authorization': 'Bearer ',
+      'Content-Type': 'application/json',
+    }, body: {
+      ...body
+    }).then((onValue) {
+      return onValue;
+    }).catchError((onError) {
+
+    }).whenComplete(() {
+
+    });
+  }
+
   Future<String> chatGen(String promt, bool isThinking) async {
     String token = await UserProvider().getToken();
     final headers = {
@@ -98,13 +142,16 @@ class Api {
     );
     final res = await http.post(url, headers: headers, body: data);
     final status = res.statusCode;
-    if (status != 200) throw Exception('http.post error: statusCode= $status');
-    final response = jsonDecode(res.body);
+    if (status != 200) {
+      final response = jsonDecode(res.body);
     List<String> listResponse = response['choices'][0]['message']['content']
         .split('</think>');
     return isThinking
         ? '${listResponse[0]} <think end>\n ${listResponse[1]}'
         : listResponse[1];
+    }else{
+      return 'error: $status';
+    }
   }
 
 
