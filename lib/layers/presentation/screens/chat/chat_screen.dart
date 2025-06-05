@@ -21,6 +21,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   bool isThinking = false;
+
+
   void changeThinking() async {
     isThinking = !isThinking;
     await MessageProvider().changeThinking();
@@ -79,7 +81,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         enabled: false,
                         child: Row(
                           children: [
-                            Text('show thinking', style: TextStyle(color: Colors.white),),
+                            Text(
+                              'show thinking',
+                              style: TextStyle(color: Colors.white),
+                            ),
                             Spacer(),
                             StatefulBuilder(
                               builder:
@@ -101,7 +106,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         enabled: false,
                         child: Row(
                           children: [
-                            Text('clean chat', style: TextStyle(color: Colors.white),),
+                            Text(
+                              'clean chat',
+                              style: TextStyle(color: Colors.white),
+                            ),
                             Spacer(),
                             IconButton(
                               onPressed: () async {

@@ -15,6 +15,7 @@ abstract class ImagesRepository {
     final image = await http.get(Uri.parse(url));
     final file = File('${directory.path}/${url.split('/').last}');
     await file.writeAsBytes(image.bodyBytes);
+    print(file.path);
     return file.path;
   }
 
