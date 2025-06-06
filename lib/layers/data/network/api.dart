@@ -59,51 +59,65 @@ class Api {
   //   }
   // }
 
-  Future<bool> uploadImage(XFile file) async {
-    // final uploadId = 'qweqweqweewq';
-    // final url = Uri.parse(
-    //   'https://hysts-shap-e.hf.space/gradio_api/upload?upload_id=$uploadId',
-    // );
-    final url = Uri.parse(
-      'https://hysts-shap-e.hf.space/gradio_api/queue/join',
-    );
-    final base64dfile = base64Encode(await file.readAsBytes());
-
-    final request =
-        http.MultipartRequest('POST', url)
-          ..fields['file_base64'] = base64dfile
-          ..fields['file_name'] = file.name;
-    final response = await request.send();
-    print(response.stream.bytesToString());
-    if (response.statusCode == 200) {
-      print('Файл успешно загружен!');
-    } else {
-      print('Ошибка загрузки: ${response.statusCode}');
-      print('Ответ сервера: ${await response.stream.bytesToString()}');
+  Future printIps() async {
+    for (var interface in await NetworkInterface.list()) {
+      print('== Interface: ${interface.name} ==');
+      for (var addr in interface.addresses) {
+        print(
+          '${addr.address} ${addr.host} ${addr.isLoopback} ${addr.rawAddress} ${addr.type.name}',
+        );
+      }
     }
-    return true;
+  }
+
+  Future<String> uploadImage(XFile file) async {
+    final upload_id = 'v527jhe3te';
+    final token = await UserProvider().getToken();    
+    var headers = {'Authorization': 'Bearer $token'};
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse(
+        'https://hysts-shap-e.hf.space/gradio_api/upload?upload_id=qqwwwwwwww',
+      ),
+    );
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'files',
+        file.path,
+      ),
+    );
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final body =  await response.stream.bytesToString();
+      print(jsonDecode(body));
+      return jsonDecode(body)[0];
+    } else {
+      print(response.reasonPhrase);
+      return 'error';
+    }
   }
 
   Future<String> modelGen(XFile file) async {
-    // final base64dfile = base64Encode(await file.readAsBytes());
-    // final token = await UserProvider().getToken();
-    // final uuid = '67448ba4-88dc-4426-a01c-5ed95d638a7a';
-    // final url = Uri.parse(
-    //   'https://hysts-shap-e.hf.space/gradio_api/queue/join',
-    // );
-    // final req = await http.post(
-    //   url,
-    //   // headers: {
-    //   //   // 'Authorization': 'Bearer $token',
-    //   //   'Content-Type': 'application/json',
-    //   // },
-    //   body:
-    //       '{"data": ["data:image/png:$base64dfile, 0, 1, 2],"session_hash": $uuid}',
-    // );
-    // print('/////////////////////////${req.body}');
-    // // final response = await _getResponse(url, jsonDecode(req.body)['event_id']);
-    await uploadImage(file);
-    return 'error_from_api';
+    final url = Uri.parse('https://hysts-shap-e.hf.space/gradio_api/call/image-to-3d');
+    final pathImage = await uploadImage(file);
+    final req = await http.post(
+      url,
+      headers: {
+        "Content-Type": "application/json" 
+      },
+      body: '{"data": [{"path":"$pathImage","meta":{"_type":"gradio.FileData"}},0,1,2]}'
+    );
+    if(req.statusCode == 200){
+      print(jsonDecode(req.body));
+      final res = await _getResponse(url, jsonDecode(req.body)['event_id']);
+      print(res);
+      return res[0]['url'];
+    }else{
+      return 'error_from_api';
+    }
   }
 
   // Future<String> modelGen(XFile file) async {

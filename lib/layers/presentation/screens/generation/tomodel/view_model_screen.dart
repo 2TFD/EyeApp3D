@@ -112,7 +112,6 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                             Uri.file(
                               '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
                             ).toString(),
-                        alt: '3d model',
                         autoRotate: true,
                       ),
                       positionedDownload,

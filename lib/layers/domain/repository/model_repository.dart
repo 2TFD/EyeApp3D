@@ -1,14 +1,28 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/layers/domain/entity/model.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ModelRepository {
   final _pref = SharedPreferences.getInstance();
 
+
+  Future<String> createFile(String url) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final model = await http.get(Uri.parse(url));
+    final file = File('${directory.path}/${url.split('/').last}');
+    await file.writeAsBytes(model.bodyBytes);
+    print(file.path);
+    return file.path;
+  }
+
   Future<Model> newModel(XFile image) async {
-    final modelPath = await Api().modelGen(image);
+    final modelLink = await Api().modelGen(image);
+    final modelPath = await createFile(modelLink);
     Model model = Model(modelPath: modelPath, imagePath: image.path);
     saveModel(model);
     return model;
