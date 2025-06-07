@@ -47,10 +47,14 @@ class _PreviewScreenState extends State<PreviewScreen> {
                     int tokens = await UserProvider().getTokens();
                     if (tokens >= PriceList().model_gen) {
                       UserProvider().buyTokens(PriceList().model_gen);
-                      context.goNamed(
-                        'view3d',
-                        extra: {'par1': widget.image, 'par2': dir.path},
-                      );
+                      // context.goNamed(
+                      //   'view3d',
+                      //   extra: {'par1': widget.image, 'par2': dir.path},
+                      // );
+                      context.push('/gen/camera/preview/view3d', extra: <String, dynamic>{
+                        'fileImage': widget.image,
+                        'dirPath' : dir.path,
+                      });
                     } else {
                       showDialog(
                         context: context,

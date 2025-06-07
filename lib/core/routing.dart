@@ -71,24 +71,40 @@ class Routing {
                     routes: [
                       GoRoute(
                         path: 'preview',
-                        name: 'preview',
-                        builder: (context, state) {
-                          Map<String, dynamic> extra =
-                              state.extra as Map<String, dynamic>;
-                          return PreviewScreen(image: extra['par1']);
-                        },
+                        // name: 'preview',
+                        // builder: (context, state) {
+                        //   Map<String, dynamic> extra =
+                        //       state.extra as Map<String, dynamic>;
+                        //   return PreviewScreen(image: extra['par1']);
+                        // },
+                        builder:
+                            (context, state) => PreviewScreen(
+                              image:
+                                  // (state.extra
+                                  //     as Map<String, dynamic>)['image'] as XFile,
+                                  state.extra as XFile
+                            ),
                         routes: [
                           GoRoute(
                             path: 'view3d',
-                            name: 'view3d',
-                            builder: (context, state) {
-                              Map<String, dynamic> extra =
-                                  state.extra as Map<String, dynamic>;
-                              return ViewModelScreen(
-                                fileImage: extra['par1'],
-                                dirPath: extra['par2'],
-                              );
-                            },
+                            // name: 'view3d',
+                            builder:
+                                (context, state) => ViewModelScreen(
+                                  fileImage:
+                                      (state.extra
+                                          as Map<String, dynamic>)['fileImage'] as XFile,
+                                  dirPath:
+                                      (state.extra
+                                          as Map<String, dynamic>)['dirPath'] as String,
+                                ),
+                            // {
+                            // Map<String, dynamic> extra =
+                            //     state.extra as Map<String, dynamic>;
+                            // return ViewModelScreen(
+                            //   fileImage: extra['par1'],
+                            //   dirPath: extra['par2'],
+                            // ),
+                            // },
                           ),
                         ],
                       ),

@@ -23,7 +23,11 @@ class _CameraScreenState extends State<CameraScreen> {
   void initState() {
     Permission.camera.request();
     super.initState();
-    cameraController = CameraController(cameras[0], ResolutionPreset.max, enableAudio: false);
+    cameraController = CameraController(
+      cameras[0],
+      ResolutionPreset.max,
+      enableAudio: false,
+    );
     cameraController
         .initialize()
         .then((_) {
@@ -58,10 +62,14 @@ class _CameraScreenState extends State<CameraScreen> {
             children: [
               CameraPreview(cameraController),
               SizedBox(height: 30),
-              IconButton(onPressed:  () async {
+              IconButton(
+                onPressed: () async {
                   image = await cameraController.takePicture();
-                  context.goNamed('preview', extra: {'par1': image!});
-                }, icon: Icon(Icons.circle_rounded, size: 80,)),
+                  // context.goNamed('preview', extra: {'par1': image!});
+                  context.go('/gen/camera/preview', extra: image!);
+                },
+                icon: Icon(Icons.circle_rounded, size: 80),
+              ),
             ],
           ),
         ),

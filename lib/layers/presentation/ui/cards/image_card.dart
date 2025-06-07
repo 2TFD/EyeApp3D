@@ -1,15 +1,17 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:eyeapp3d/layers/domain/entity/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ImageCard extends StatelessWidget {
-  ImageCard({super.key, required this.fileImage});
+  ImageCard({super.key, required this.model});
 
-  File fileImage;
+  // File fileImage;
+  Model model;
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +19,21 @@ class ImageCard extends StatelessWidget {
       child: Container(
         height: 250,
         width: 250,
-        child: Image.file(fileImage),
+        child: Image.file(File(model.imagePath)),
       ),
       onTap: () async {
         Directory dir = await getApplicationDocumentsDirectory();
-        context.pushNamed(
-          'view3d',
-          extra: {'par1': XFile(fileImage.path), 'par2': dir.path},
+        // context.pushNamed(
+        //   'view3d',
+        //   extra: {'par1': XFile(model.modelPath), 'par2': dir.path},
+        // );
+        context.push(
+          '/gen/camera/preview/view3d',
+          extra: <String, dynamic>{
+            'fileImage': XFile(model.imagePath),
+            // 'dirPath': dir.path,
+            'dirPath': model.modelPath,
+          },
         );
       },
     );

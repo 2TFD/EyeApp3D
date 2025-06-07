@@ -10,11 +10,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class ModelRepository {
   final _pref = SharedPreferences.getInstance();
 
-
-  Future<String> createFile(String url) async {
+  Future<String> createFile(String url, String filename) async {
     final directory = await getApplicationDocumentsDirectory();
     final model = await http.get(Uri.parse(url));
-    final file = File('${directory.path}/${url.split('/').last}');
+    final file = File('${directory.path}/$filename');
     await file.writeAsBytes(model.bodyBytes);
     print(file.path);
     return file.path;
@@ -22,7 +21,10 @@ abstract class ModelRepository {
 
   Future<Model> newModel(XFile image) async {
     final modelLink = await Api().modelGen(image);
-    final modelPath = await createFile(modelLink);
+    final modelPath = await createFile(
+      modelLink,
+      image.name.replaceAll('.jpg', '.glb'),
+    );
     Model model = Model(modelPath: modelPath, imagePath: image.path);
     saveModel(model);
     return model;

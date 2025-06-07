@@ -10,69 +10,9 @@ import 'package:path_provider/path_provider.dart';
 class Api {
   String url = 'http://93.183.81.143:8000';
 
-  // Future<String> modelGen(XFile imageFile) async {
-  //   // Считываем файл и кодируем в Base64
-  //   final token = await UserProvider().getToken();
-  //   final bytes = await imageFile.readAsBytes();
-  //   final base64Img = base64Encode(bytes);
-  //   // Параметры генерации
-  //   final seed = 0;
-  //   final guidance = 3.0;
-  //   final steps = 64;
-  //   // Формируем JSON для запроса (используем image-to-3d)
-  //   // final apiUrl = 'https://hysts-shap-e.hf.space/';
-  //   final apiUrl = 'https://hysts-shap-e.hf.space/gradio_api/call/image-to-3d';
-  //   // final apiUrl = 'https://hysts-shap-e.hf.space/api/predict/image-to-3d';
-  //   final headers = {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer $token', // если API требует токен
-  //   };
-  //   final body = jsonEncode({
-  //     'data': ['data:image/png;base64,$base64Img', seed, guidance, steps],
-  //   });
-  //   // Отправляем POST-запрос
-  //   final response = await http.post(
-  //     Uri.parse(apiUrl),
-  //     headers: headers,
-  //     body: body,
-  //   );
-  //   if (response.statusCode == 200) {
-  //     final respJson = jsonDecode(response.body);
-  //     // Берём путь к файлу .glb на сервере
-  //     print(respJson);
-  //     final String glbPath = respJson['data'][0]['name'];
-  //     // Скачиваем сам .glb по полученному пути
-  //     final fileUrl = 'https://hysts-shap-e.hf.space/file=$glbPath';
-  //     final glbResp = await http.get(Uri.parse(fileUrl));
-  //     if (glbResp.statusCode == 200) {
-  //       // Сохраняем GLB в локальный файл (например, в папку приложения)
-  //       // Здесь просто пример: сохраняем в переменную или файл через path_provider и File.
-  //       final bytes = glbResp.bodyBytes;
-  //       // TODO: написать в файл или передать bytes в виджет отображения
-  //       // Например: await File('model.glb').writeAsBytes(bytes);
-  //       print('GLB-модель получена, размер: ${bytes.length} байт');
-  //     }
-  //     return '';
-  //   } else {
-  //     print('Ошибка запроса: ${response.statusCode}');
-  //     return '';
-  //   }
-  // }
-
-  Future printIps() async {
-    for (var interface in await NetworkInterface.list()) {
-      print('== Interface: ${interface.name} ==');
-      for (var addr in interface.addresses) {
-        print(
-          '${addr.address} ${addr.host} ${addr.isLoopback} ${addr.rawAddress} ${addr.type.name}',
-        );
-      }
-    }
-  }
-
   Future<String> uploadImage(XFile file) async {
-    final upload_id = 'v527jhe3te';
-    final token = await UserProvider().getToken();    
+    final upload_id = Helpers().getRandomString(11);
+    final token = await UserProvider().getToken();
     var headers = {'Authorization': 'Bearer $token'};
     var request = http.MultipartRequest(
       'POST',
@@ -80,18 +20,13 @@ class Api {
         'https://hysts-shap-e.hf.space/gradio_api/upload?upload_id=qqwwwwwwww',
       ),
     );
-    request.files.add(
-      await http.MultipartFile.fromPath(
-        'files',
-        file.path,
-      ),
-    );
+    request.files.add(await http.MultipartFile.fromPath('files', file.path));
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      final body =  await response.stream.bytesToString();
+      final body = await response.stream.bytesToString();
       print(jsonDecode(body));
       return jsonDecode(body)[0];
     } else {
@@ -101,21 +36,22 @@ class Api {
   }
 
   Future<String> modelGen(XFile file) async {
-    final url = Uri.parse('https://hysts-shap-e.hf.space/gradio_api/call/image-to-3d');
+    final url = Uri.parse(
+      'https://hysts-shap-e.hf.space/gradio_api/call/image-to-3d',
+    );
     final pathImage = await uploadImage(file);
     final req = await http.post(
       url,
-      headers: {
-        "Content-Type": "application/json" 
-      },
-      body: '{"data": [{"path":"$pathImage","meta":{"_type":"gradio.FileData"}},0,1,2]}'
+      headers: {"Content-Type": "application/json"},
+      body:
+          '{"data": [{"path":"$pathImage","meta":{"_type":"gradio.FileData"}},0,1,2]}',
     );
-    if(req.statusCode == 200){
+    if (req.statusCode == 200) {
       print(jsonDecode(req.body));
       final res = await _getResponse(url, jsonDecode(req.body)['event_id']);
       print(res);
       return res[0]['url'];
-    }else{
+    } else {
       return 'error_from_api';
     }
   }

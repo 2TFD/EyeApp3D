@@ -68,15 +68,17 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
         Scaffold(
           appBar: AppBar(title: Text('3d model')),
           body:
+              // !File(
+              //       '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
+              //     ).existsSync()
               !File(
-                    '${widget.dirPath}/${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
+                    widget.dirPath,
                   ).existsSync()
                   ? FutureBuilder(
-                    // future: Api().modelGen(widget.fileImage!),
-                    future: ModelProvider().newModel(widget.fileImage!),
+                    future: ModelProvider().newModel(widget.fileImage),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        if (snapshot.data != 'error_from_api') {
+                        if (snapshot.data!.imagePath != 'error_from_api') {
                           uri = Uri.file(snapshot.data!.modelPath).toString();
                           childW = Stack(
                             children: [
@@ -110,7 +112,8 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                       ModelViewer(
                         src:
                             Uri.file(
-                              '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
+                              // '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
+                              widget.dirPath
                             ).toString(),
                         autoRotate: true,
                       ),

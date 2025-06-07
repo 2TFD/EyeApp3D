@@ -18,14 +18,27 @@ class _GalleryScreenState extends State<GalleryModelsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('gallery models')),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Text('gallery models'),
+            Spacer(),
+            IconButton(
+              onPressed: () async {
+                ModelProvider().delListModels();
+                setState(() {});
+              },
+              icon: Icon(Icons.clear),
+            ),
+          ],
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {});
           return Future<void>.delayed(Duration(seconds: 1));
         },
         child: FutureBuilder(
-          // future: Storage().getListPhoto(),
           future: ModelProvider().getListModels(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -35,7 +48,7 @@ class _GalleryScreenState extends State<GalleryModelsScreen> {
                 crossAxisSpacing: 2,
                 children:
                     (snapshot.data as List<Model>).map((e) {
-                      return ImageCard(fileImage: File(e.imagePath));
+                      return ImageCard(model: e);
                     }).toList(),
               );
             } else {
