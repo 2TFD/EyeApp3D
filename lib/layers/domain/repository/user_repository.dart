@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/layers/domain/entity/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

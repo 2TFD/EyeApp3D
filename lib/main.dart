@@ -1,25 +1,12 @@
 import 'dart:async';
-import 'package:camera/camera.dart';
 import 'package:eyeapp3d/core/brand/brand_theme.dart';
-import 'package:eyeapp3d/core/routing.dart';
+import 'package:eyeapp3d/core/router/routing.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-List<CameraDescription> cameras = [];
+import 'package:permission_handler/permission_handler.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations(
-    [
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]
-  );
-  try {
-    cameras = await availableCameras();
-  } on CameraException catch (e) {
-    debugPrint('error camera $e');
-  }
+  await Permission.camera.request();
   runApp(App());
 }
 

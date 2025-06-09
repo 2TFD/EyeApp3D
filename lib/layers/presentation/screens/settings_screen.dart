@@ -1,4 +1,4 @@
-import 'package:eyeapp3d/layers/domain/cubit/test_cubit.dart';
+import 'package:eyeapp3d/core/deprecated/cubit/test_cubit.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:eyeapp3d/layers/presentation/screens/home_screen.dart';
 import 'package:flutter/cupertino.dart';

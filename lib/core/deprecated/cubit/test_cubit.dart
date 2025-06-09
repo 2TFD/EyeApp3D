@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:eyeapp3d/layers/domain/entity/user.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 

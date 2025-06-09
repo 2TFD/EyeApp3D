@@ -1,8 +1,5 @@
-import 'dart:io';
-
-import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/layers/domain/provider/images_provider.dart';
-import 'package:eyeapp3d/layers/presentation/ui/cards/four_image_card.dart';
+import 'package:eyeapp3d/layers/presentation/shared/ui/cards/four_image_card.dart';
 import 'package:flutter/material.dart';
 
 class ViewImagesScreen extends StatefulWidget {

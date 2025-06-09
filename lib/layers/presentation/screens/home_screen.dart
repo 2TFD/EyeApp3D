@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import 'package:eyeapp3d/core/helpers.dart';
+import 'package:eyeapp3d/core/helpers/helpers.dart';
 import 'package:eyeapp3d/layers/data/network/api.dart';
-import 'package:eyeapp3d/layers/domain/cubit/test_cubit.dart';
+import 'package:eyeapp3d/core/deprecated/cubit/test_cubit.dart';
 import 'package:eyeapp3d/layers/domain/entity/user.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:eyeapp3d/layers/domain/repository/user_repository.dart';
-import 'package:eyeapp3d/layers/presentation/ui/cards/image_card.dart';
+import 'package:eyeapp3d/layers/presentation/shared/ui/cards/image_card.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

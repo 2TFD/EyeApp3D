@@ -1,5 +1,3 @@
-import 'dart:io';
-
 class Model {
   Model({required this.modelPath, required this.imagePath});
   String  modelPath;

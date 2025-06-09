@@ -1,15 +1,10 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
-import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/layers/domain/provider/model_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
-import 'package:camera/camera.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ViewModelScreen extends StatefulWidget {
@@ -34,7 +29,7 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
         onPressed: () async {
           await FilePicker.platform.saveFile(
             dialogTitle: 'Please select an output file:',
-            fileName: '${widget.fileImage!.name.replaceAll('.jpg', '.glb')}',
+            fileName: widget.fileImage.name.replaceAll('.jpg', '.glb'),
             bytes:
                 await File(
                   '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
@@ -50,7 +45,8 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
         left: 25,
         child: IconButton(
           onPressed: () async {
-            final res = await SharePlus.instance.share(
+            
+            await SharePlus.instance.share(
               ShareParams(
                 files: [
                   XFile(

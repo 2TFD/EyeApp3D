@@ -1,14 +1,9 @@
 import 'package:eyeapp3d/core/brand/price_list.dart';
-
-import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/layers/domain/entity/message.dart';
 import 'package:eyeapp3d/layers/domain/provider/message_provider.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({super.key});

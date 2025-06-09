@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:camera/camera.dart';
-import 'package:eyeapp3d/core/helpers.dart';
+import 'package:eyeapp3d/core/helpers/helpers.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 class Api {
+  // todo change with .env
   String url = 'http://93.183.81.143:8000';
 
   Future<String> uploadImage(XFile file) async {
-    final upload_id = Helpers().getRandomString(11);
+    // final upload_id = Helpers().getRandomString(11);
     final token = await UserProvider().getToken();
     var headers = {'Authorization': 'Bearer $token'};
     var request = http.MultipartRequest(

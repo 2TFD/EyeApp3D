@@ -1,10 +1,7 @@
 import 'package:camera/camera.dart';
-import 'package:eyeapp3d/core/brand/brand_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:eyeapp3d/main.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -16,31 +13,38 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   late CameraController cameraController;
+  List<CameraDescription> cameras = [];
 
   XFile? image;
 
   @override
   void initState() {
-    Permission.camera.request();
     super.initState();
-    cameraController = CameraController(
-      cameras[0],
-      ResolutionPreset.max,
-      enableAudio: false,
-    );
-    cameraController
-        .initialize()
-        .then((_) {
-          if (!mounted) {
-            return;
-          }
-          setState(() {});
-        })
-        .catchError((Object e) {
-          if (e is CameraException) {
-            print(e.code);
-          }
-        });
+    Permission.camera.request().then((_) async {
+      try {
+        cameras = await availableCameras();
+      } on CameraException catch (e) {
+        debugPrint('error camera $e');
+      }
+      cameraController = CameraController(
+        cameras[0],
+        ResolutionPreset.max,
+        enableAudio: false,
+      );
+      cameraController
+          .initialize()
+          .then((_) {
+            if (!mounted) {
+              return;
+            }
+            setState(() {});
+          })
+          .catchError((Object e) {
+            if (e is CameraException) {
+              print(e.code);
+            }
+          });
+    });
   }
 
   @override

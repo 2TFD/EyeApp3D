@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:eyeapp3d/layers/domain/entity/model.dart';
 import 'package:eyeapp3d/layers/domain/provider/model_provider.dart';
-import 'package:eyeapp3d/layers/presentation/ui/cards/image_card.dart';
+import 'package:eyeapp3d/layers/presentation/shared/ui/cards/image_card.dart';
 import 'package:flutter/material.dart';
 
 class GalleryModelsScreen extends StatefulWidget {

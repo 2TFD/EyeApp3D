@@ -1,15 +1,10 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:eyeapp3d/core/brand/price_list.dart';
-import 'package:eyeapp3d/layers/data/network/api.dart';
-import 'package:eyeapp3d/layers/domain/provider/images_provider.dart';
-import 'package:eyeapp3d/layers/domain/provider/model_provider.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 
 class PreviewScreen extends StatefulWidget {

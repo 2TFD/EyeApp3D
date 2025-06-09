@@ -1,6 +1,5 @@
 import 'package:eyeapp3d/layers/domain/entity/user.dart';
 import 'package:eyeapp3d/layers/domain/repository/user_repository.dart';
-import 'package:http/http.dart';
 
 class UserProvider extends UserRepository {
   Future<void> setToken(String token) async {
