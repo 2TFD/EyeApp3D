@@ -51,5 +51,4 @@ flutter:
   assets:
     - assets/models/
     - assets/image/
-    - .env
   

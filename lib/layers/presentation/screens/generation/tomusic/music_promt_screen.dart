@@ -1,5 +1,6 @@
 import 'package:eyeapp3d/core/brand/price_list.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -44,55 +45,32 @@ class MusicPromtScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 50),
-              Container(
-                height: 200,
-                width: 300,
-                child: Expanded(
-                  child: ListWheelScrollView(
-                    physics: FixedExtentScrollPhysics(),
-                    itemExtent: 100,
-                    perspective: 0.005,
-                    children:
-                        styleList.map((e) {
-                          return GestureDetector(
-                            onTap: () async {
-                              int tokens = await UserProvider().getTokens();
-                              if (tokens >= PriceList().music_gen) {
-                                UserProvider().buyTokens(PriceList().music_gen);
-                                context.push(
-                                  '/gen/music_promt/music_view',
-                                  extra: <String, dynamic>{
-                                    'promt': inputcontroller.text,
-                                    'style': e,
-                                    'filePath': 'null',
-                                    'indexTrack': 'null',
-                                  },
-                                );
-                              } else {
-                                showDialog(
-                                  context: context,
-                                  builder:
-                                      (context) => SimpleDialog(
-                                        backgroundColor: Colors.transparent,
-                                        title: Center(child: Text('no tokes(')),
-                                      ),
-                                );
-                              }
-                            },
-                            child: Container(
-                              width: 200,
-                              color: Colors.white,
-                              child: Center(
-                                child: Text(
-                                  '$e generate ->',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                  ),
-                ),
+              CupertinoButton(
+                color: Colors.white,
+                child: Text('to gen!', style: TextStyle(color: Colors.black)),
+                onPressed: () async {
+                  int tokens = await UserProvider().getTokens();
+                  if (tokens >= PriceList().image_gen) {
+                    UserProvider().buyTokens(PriceList().music_gen);
+                    context.push(
+                      '/gen/music_promt/music_view',
+                      extra: <String, dynamic>{
+                        'promt': inputcontroller.text,
+                        'filePath': 'null',
+                        'indexTrack': 'null',
+                      },
+                    );
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (context) => SimpleDialog(
+                            backgroundColor: Colors.transparent,
+                            title: Center(child: Text('no tokes(')),
+                          ),
+                    );
+                  }
+                },
               ),
             ],
           ),

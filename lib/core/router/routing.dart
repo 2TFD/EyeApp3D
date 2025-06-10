@@ -137,9 +137,6 @@ class Routing {
                               promt:
                                   (state.extra as Map<String, dynamic>)['promt']
                                       as String,
-                              style:
-                                  (state.extra as Map<String, dynamic>)['style']
-                                      as String,
                               filePath:
                                   (state.extra
                                       as Map<String, dynamic>)['filePath'],

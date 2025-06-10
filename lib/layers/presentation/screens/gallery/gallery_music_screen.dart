@@ -1,5 +1,4 @@
 import 'package:eyeapp3d/layers/domain/provider/track_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,14 +34,12 @@ class _GalleryMusicScreenState extends State<GalleryMusicScreen> {
                                 '/gen/music_promt/music_view',
                                 extra: <String, dynamic>{
                                   'promt': e.promt,
-                                  'style': e.style,
                                   'filePath': e.trackPath,
-                                  'indexTrack': e.indexTrack,
+                                  'indexTrack': '${e.indexTrack}',
                                 },
                               ),
                           child: ListTile(
                             title: Text(e.promt),
-                            subtitle: Text(e.style),
                           ),
                         );
                       }).toList(),

@@ -10,11 +10,9 @@ class ViewMusicScreen extends StatefulWidget {
   const ViewMusicScreen({
     super.key,
     required this.promt,
-    required this.style,
     required this.filePath,
     required this.indexTrack,
   });
-  final String style;
   final String promt;
   final String filePath;
   final String indexTrack;
@@ -109,7 +107,7 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
           (widget.filePath == 'null' || widget.indexTrack == 'null')
               ? FutureBuilder(
                 // future: Api().musicGen(widget.promt, widget.style),
-                future: TrackProvider().newTrack(widget.promt, widget.style),
+                future: TrackProvider().newTrack(widget.promt),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     childW = Center(
@@ -124,7 +122,7 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                               color: Colors.white,
                               child: Center(
                                 child: Text(
-                                  '${widget.promt}\n${widget.style}\ntap to see',
+                                  '${widget.promt}\ntap to see',
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -185,13 +183,6 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                                                 fontSize: 20,
                                               ),
                                             ),
-                                            Text(
-                                              snapshot.data![index].style,
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14,
-                                              ),
-                                            ),
                                           ],
                                         ),
                                       ),
@@ -207,7 +198,6 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                               Column(
                                 children: [
                                   Text(snapshot.data![currentIndex].promt),
-                                  Text(snapshot.data![currentIndex].style),
                                 ],
                               ),
                               IconButton(

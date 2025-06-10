@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:eyeapp3d/core/deprecated/cubit/test_cubit.dart';
+import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -28,9 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // final subscription = cubit.stream.listen((e) {
-    //   setState(() {});
-    // });
+    cubit.stream.listen((e) {
+      setState(() {});
+    });
     cubit.getUser();
 
     super.initState();
@@ -177,6 +180,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
+            ),
+            CupertinoButton(
+              child: Text('data'),
+              onPressed: () async {
+                final stream = await Api().chatGen('hello');
+                stream.listen((e) {
+                  print(utf8.decode(e).replaceAll('data: ', '').trim());
+                  
+                });
+              },
             ),
           ],
         ),

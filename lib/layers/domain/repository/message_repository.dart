@@ -19,20 +19,21 @@ abstract class MessageRepository {
   }
 
   Future<Message> newMessage(String promt, bool isThinling) async {
-    String message = await Api().chatGen(promt);
+    // String message = await Api().chatGen(promt);
     // String response = jsonDecode(message)['choices'][0]['message']['content'];
-    List<String> listmessage = message.split('</think>');
-    DateTime time = DateTime.now();
-    Message mes = Message(
-      message:
-          isThinling
-              ? '${listmessage[0]}<end think>${listmessage[1]}'
-              : listmessage[1],
-      time: time,
-      user: false,
-    );
-    saveMessage(mes);
-    return mes;
+    // List<String> listmessage = message.split('</think>');
+    // DateTime time = DateTime.now();
+    // Message mes = Message(
+    //   message:
+    // isThinling
+    //     ? '${listmessage[0]}<end think>${listmessage[1]}'
+    //     : listmessage[1],
+    // time: time,
+    // user: false,
+    // );
+    // saveMessage(mes);
+    // return mes;
+    return Message(message: 'message', time: DateTime.now(), user: false);
   }
 
   Future<void> saveMessage(Message message) async {

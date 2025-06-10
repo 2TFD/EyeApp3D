@@ -1,16 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:eyeapp3d/core/helpers/helpers.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 class Api {
-  // todo change with .env
-  String url = String.fromEnvironment('BASE_API_URL');
-  // String url = 'http://93.183.81.143:8000';
-
   Future<String> uploadImage(XFile file) async {
     // final upload_id = Helpers().getRandomString(11);
     final token = await UserProvider().getToken();
@@ -53,65 +49,11 @@ class Api {
     }
   }
 
-  // Future<String> modelGen(XFile file) async {
-  //   var uri = Uri.parse('$url/3d');
-  //   var request = http.MultipartRequest('POST', uri);
-  //   request.files.add(
-  //     await http.MultipartFile.fromPath(
-  //       'file', // имя должно совпадать с параметром FastAPI
-  //       file.path,
-  //     ),
-  //   );
-  //   String token = await UserProvider().getToken();
-  //   request.headers['accept'] = 'application/json';
-  //   request.headers['hf-token'] = token;
-  //   request.headers['Content-Type'] = 'multipart/form-data';
-  //   final directory = await getApplicationDocumentsDirectory();
-  //   String dirToFile;
-  //   var response = await request.send();
-  //   if (response.statusCode == 200) {
-  //     dirToFile = '${directory.path}/${file.name.replaceAll('.jpg', '.glb')}';
-  //     final responseBody = await response.stream.bytesToString();
-  //     final jsonResponse = json.decode(responseBody);
-  //     final datacode = jsonResponse['bytes'] as String;
-  //     final decodetBytes = base64.decode(datacode);
-  //     (decodetBytes);
-  //     final fileModel = File(dirToFile);
-  //     await fileModel.create(recursive: true);
-  //     await fileModel.writeAsBytes(decodetBytes, flush: true);
-  //     return dirToFile;
-  //   } else {
-  //     print('Ошибка при отправке файла: ${response.statusCode}');
-  //     return dirToFile = 'error_from_api';
-  //   }
-  // }
-
   Future<dynamic> _getResponse(Uri url, String eventId) async {
     Uri uri = Uri.parse('$url/$eventId');
     final res = await http.get(uri);
     return jsonDecode(res.body.split('data:')[1]);
   }
-
-  // Future<dynamic> _hfRequest(
-  //   Map<String, String> headers,
-  //   String body,
-  //   String token,
-  //   String url,
-  // ) async {
-  //   return await http
-  //       .post(Uri.parse(url), headers: headers, body: body)
-  //       .then((onValue) {
-  //         print('then');
-  //         // return onValue.body;
-  //       })
-  //       .catchError((onError) {
-  //         print('onError');
-  //         // print(onError);
-  //       })
-  //       .whenComplete(() {
-  //         print('whenComplete');
-  //       });
-  // }
 
   Future<List<String>> imageGen(String promt) async {
     Uri uri = Uri.parse(
@@ -129,46 +71,81 @@ class Api {
     ];
   }
 
-  Future<String> chatGen(String promt) async {
+  // Future<String> chatGen(String promt) async {
+  //   String token = await UserProvider().getToken();
+  //   final req = await http.post(
+  //     Uri.parse('https://router.huggingface.co/cerebras/v1/chat/completions'),
+  //     headers: {
+  //       'Authorization': 'Bearer $token',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body:
+  //         '{"messages": [{"role": "user","content": "$promt"}],"model": "qwen-3-32b","stream": false}',
+  //   );
+  //   final res = req.body;
+  //   return jsonDecode(res)['choices'][0]['message']['content'];
+  // }
+
+  Future<HttpClientResponse> chatGen(String promt) async {
     String token = await UserProvider().getToken();
-    final req = await http.post(
-      Uri.parse('https://router.huggingface.co/cerebras/v1/chat/completions'),
+    String sessionHash = Helpers().getRandomString(10);
+    String baseUrl = 'https://tencent-hunyuan-t1.hf.space';
+    await http.post(
+      Uri.parse('$baseUrl/gradio_api/queue/join?__theme=system'),
       headers: {
+        "Content-Type": "application/json",
         'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
       },
       body:
-          '{"messages": [{"role": "user","content": "$promt"}],"model": "qwen-3-32b","stream": false}',
+          '{"data":[null,[["$promt",null]]],"event_data":null,"fn_index":3,"trigger_id":6,"session_hash":"$sessionHash"}',
     );
-    final res = req.body;
-    return jsonDecode(res)['choices'][0]['message']['content'];
+    print(sessionHash);
+
+    final client = HttpClient();
+    final request = await client.getUrl(
+      Uri.parse('$baseUrl/gradio_api/queue/data?session_hash=$sessionHash'),
+    );
+    HttpClientResponse response = await request.close();
+    print(response.statusCode);
+    return response;
   }
 
-  Future<String> musicGen(String promt, String style) async {
-    var uri = Uri.parse('$url/music');
-    var request = http.MultipartRequest('POST', uri);
-    String token = await UserProvider().getToken();
-    request.headers['accept'] = 'application/json';
-    request.headers['promt'] = promt;
-    request.headers['token'] = token;
-    request.headers['style'] = style;
-    final directory = await getApplicationDocumentsDirectory();
+  Future<String> musicGen(String promt) async {
+    String sessionHash = Helpers().getRandomString(10);
+    String baseUrl = 'https://facebook-melodyflow.hf.space';
+    // String token = await UserProvider().getToken();
+    String token = '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';
+    print(sessionHash);
+    await http.post(
+      Uri.parse('$baseUrl/queue/join?__theme=system'),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
 
-    String dirToFile;
-    var response = await request.send();
-    if (response.statusCode == 200) {
-      final responseBody = await response.stream.bytesToString();
-      final jsonResponse = json.decode(responseBody);
-      String base64code = jsonResponse['0'];
-      final decodetBytes = base64.decode(base64code);
-      String filename = Helpers().getRandomString(25);
-      dirToFile = '${directory.path}/$filename.wav';
-      final fileMusic = File(dirToFile);
-      await fileMusic.create(recursive: true);
-      await fileMusic.writeAsBytes(decodetBytes, flush: true);
-      return fileMusic.path;
-    } else {
-      return dirToFile = 'error_from_api';
+      body:
+          '{"data":["facebook/melodyflow-t24-30secs","$promt","midpoint",128,0,false,0.2,30,null],"event_data":null,"fn_index":1,"trigger_id":9,"session_hash":"$sessionHash"}',
+    );
+    final client = HttpClient();
+    final request = await client.getUrl(
+      Uri.parse('$baseUrl/queue/data?session_hash=$sessionHash'),
+    );
+    HttpClientResponse response = await request.close();
+    final lines = await response.transform(utf8.decoder).join();
+    for (var line in lines.trim().split('\n')) {
+      if (line.startsWith('data:')) {
+        if (jsonDecode(line.substring(5).trim())['msg'] ==
+            'process_completed') {
+          if (jsonDecode(line.substring(5).trim())['success'] == true) {
+            return jsonDecode(
+              line.substring(5).trim(),
+            )['output']['data'][0]['url'];
+          } else {
+            return 'error_token';
+          }
+        }
+      }
     }
+    return 'null';
   }
 }
