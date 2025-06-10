@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class GetPromtScreen extends StatelessWidget {
-  GetPromtScreen({super.key});
+  const GetPromtScreen({super.key});
 
-  String promt = 'null';
 
   @override
   Widget build(BuildContext context) {
+    String promt = 'null';
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -37,7 +37,7 @@ class GetPromtScreen extends StatelessWidget {
               CupertinoButton(
                 color: Colors.white,
                 child: Text(
-                  'generaite!',
+                  'to gen!',
                   style: TextStyle(color: Colors.black),
                 ),
                 onPressed: () async {

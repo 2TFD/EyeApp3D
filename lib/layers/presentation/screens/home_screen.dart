@@ -1,22 +1,11 @@
 import 'dart:math';
-
-import 'package:eyeapp3d/core/helpers/helpers.dart';
-import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/core/deprecated/cubit/test_cubit.dart';
-import 'package:eyeapp3d/layers/domain/entity/user.dart';
-import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
-import 'package:eyeapp3d/layers/domain/repository/user_repository.dart';
-import 'package:eyeapp3d/layers/presentation/shared/ui/cards/image_card.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -39,9 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    final subscription = cubit.stream.listen((e) {
-      setState(() {});
-    });
+    // final subscription = cubit.stream.listen((e) {
+    //   setState(() {});
+    // });
     cubit.getUser();
 
     super.initState();

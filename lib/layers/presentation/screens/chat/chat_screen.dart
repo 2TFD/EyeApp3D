@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({super.key});
-  List<Widget> messages = [];
   final textFiledcontroll = TextEditingController();
-  bool loading = false;
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
   bool isThinking = false;
+  List<Widget> messages = [];
+  bool loading = false;
 
 
   void changeThinking() async {
@@ -25,7 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void updateChat() async {
     List<Message> list = await MessageProvider().getListMessages();
-    widget.messages =
+    messages =
         list.map((e) {
           bool user = e.user;
           return Align(
@@ -133,7 +133,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         reverse: true,
                         keyboardDismissBehavior:
                             ScrollViewKeyboardDismissBehavior.onDrag,
-                        child: Column(children: widget.messages),
+                        child: Column(children: messages),
                       ),
                     ),
                     TextField(
@@ -149,7 +149,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
                         suffixIcon:
-                            widget.loading
+                            loading
                                 ? CupertinoActivityIndicator()
                                 : IconButton(
                                   onPressed: () async {
@@ -169,13 +169,13 @@ class _ChatScreenState extends State<ChatScreen> {
                                           user: true,
                                         ),
                                       );
-                                      widget.loading = true;
+                                      loading = true;
                                       updateChat();
                                       await MessageProvider().newMessage(
                                         message.replaceAll('\n', ' '),
                                         isThinking,
                                       );
-                                      widget.loading = false;
+                                      loading = false;
                                       updateChat();
                                     } else {
                                       showDialog(

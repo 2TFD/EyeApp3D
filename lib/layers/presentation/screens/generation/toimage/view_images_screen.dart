@@ -3,7 +3,7 @@ import 'package:eyeapp3d/layers/presentation/shared/ui/cards/four_image_card.dar
 import 'package:flutter/material.dart';
 
 class ViewImagesScreen extends StatefulWidget {
-  ViewImagesScreen({super.key, required this.promt});
+  const ViewImagesScreen({super.key, required this.promt});
 
   final String promt;
 
@@ -19,15 +19,16 @@ class _ViewImagesScreenState extends State<ViewImagesScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder(
-        // future: Api().imageGen(widget.promt),
         future: ImagesProvider().newImages(widget.promt),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            childW = FourImageCard(list: [
-              snapshot.data!.imagePathOne,
-              snapshot.data!.imagePathTwo,
-              snapshot.data!.imagePathThree,
-              snapshot.data!.imagePathFour,
+            childW = FourImageCard(
+              promt: widget.promt,
+              list: [
+                snapshot.data!.imagePathOne,
+                snapshot.data!.imagePathTwo,
+                snapshot.data!.imagePathThree,
+                snapshot.data!.imagePathFour,
             ]);
           } else {
             childW = CircularProgressIndicator();

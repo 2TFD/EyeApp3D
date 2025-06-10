@@ -1,15 +1,16 @@
-import 'dart:ffi';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class InstructionScreen extends StatelessWidget {
-  InstructionScreen({super.key});
+  const InstructionScreen({super.key});
 
-  List<Widget> instructionWidgers = [
+  
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> instructionWidgers = [
     Container(
       width: 300,
       margin: EdgeInsets.symmetric(horizontal: 5.0),
@@ -47,9 +48,7 @@ class InstructionScreen extends StatelessWidget {
       )
     ),
   ];
-
-  @override
-  Widget build(BuildContext context) {
+  
     return Scaffold(
       appBar: AppBar(),
       body: Column(

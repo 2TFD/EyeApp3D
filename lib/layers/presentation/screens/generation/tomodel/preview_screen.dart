@@ -8,9 +8,9 @@ import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 
 class PreviewScreen extends StatefulWidget {
-  PreviewScreen({super.key, required this.image});
+  const PreviewScreen({super.key, required this.image});
 
-  XFile image;
+  final XFile image;
 
   @override
   State<PreviewScreen> createState() => _PreviewScreenState();

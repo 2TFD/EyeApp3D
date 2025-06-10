@@ -2,17 +2,17 @@ import 'package:eyeapp3d/layers/domain/entity/user.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class SaveDataScreen extends StatelessWidget {
-  SaveDataScreen({super.key});
+ const  SaveDataScreen({super.key});
 
-  String token = 'token';
-  String name = 'name';
+  
 
   @override
   Widget build(BuildContext context) {
+    String token = 'token';
+    String name = 'name';
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(

@@ -1,17 +1,15 @@
 import 'dart:io';
-import 'package:camera/camera.dart';
 import 'package:eyeapp3d/layers/domain/provider/model_provider.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ViewModelScreen extends StatefulWidget {
-  ViewModelScreen({super.key, required this.fileImage, required this.dirPath});
+  const ViewModelScreen({super.key, required this.fileImage, required this.dirPath});
 
-  XFile fileImage;
-  String dirPath;
+  final XFile fileImage;
+  final String dirPath;
   @override
   State<ViewModelScreen> createState() => _ViewModelScreenState();
 }
@@ -35,7 +33,6 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                   '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
                 ).readAsBytes(),
           );
-          ;
         },
         icon: Icon(Icons.download),
       ),
@@ -64,9 +61,6 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
         Scaffold(
           appBar: AppBar(title: Text('3d model')),
           body:
-              // !File(
-              //       '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
-              //     ).existsSync()
               !File(
                     widget.dirPath,
                   ).existsSync()
@@ -108,7 +102,6 @@ class _ViewModelScreenState extends State<ViewModelScreen> {
                       ModelViewer(
                         src:
                             Uri.file(
-                              // '${widget.dirPath}/${widget.fileImage.name.replaceAll('.jpg', '.glb')}',
                               widget.dirPath
                             ).toString(),
                         autoRotate: true,

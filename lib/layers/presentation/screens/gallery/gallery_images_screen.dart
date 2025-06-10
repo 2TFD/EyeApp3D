@@ -4,8 +4,7 @@ import 'package:eyeapp3d/layers/presentation/shared/ui/cards/four_image_card.dar
 import 'package:flutter/material.dart';
 
 class GalleryImagesScreen extends StatefulWidget {
-  GalleryImagesScreen({super.key});
-
+  const GalleryImagesScreen({super.key});
   @override
   State<GalleryImagesScreen> createState() => _GalleryScreenState();
 }
@@ -23,7 +22,6 @@ class _GalleryScreenState extends State<GalleryImagesScreen> {
           return Future<void>.delayed(Duration(seconds: 1));
         },
         child: FutureBuilder(
-          // future: Storage().getListImage(),
           future: ImagesProvider().getListImages(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -31,7 +29,9 @@ class _GalleryScreenState extends State<GalleryImagesScreen> {
                 crossAxisCount: 1,
                 children:
                     (snapshot.data as List<Images>).map((e) {
-                      return Center(child: FourImageCard(list: [
+                      return Center(child: FourImageCard(
+                        promt: e.promt,
+                        list: [
                         e.imagePathOne,
                         e.imagePathTwo,
                         e.imagePathThree,

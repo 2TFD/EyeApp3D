@@ -1,26 +1,23 @@
-import 'dart:ffi';
 import 'dart:io';
-import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:eyeapp3d/layers/domain/provider/track_provider.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ViewMusicScreen extends StatefulWidget {
-  ViewMusicScreen({
+  const ViewMusicScreen({
     super.key,
     required this.promt,
     required this.style,
     required this.filePath,
     required this.indexTrack,
   });
-  String promt;
-  String style;
-  String filePath;
-  String indexTrack;
+  final String style;
+  final String promt;
+  final String filePath;
+  final String indexTrack;
   @override
   State<ViewMusicScreen> createState() => _ViewMusicScreenState();
 }
@@ -105,7 +102,7 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
   @override
   Widget build(BuildContext context) {
     Widget childW;
-    final player = AudioPlayer();
+    // final player = AudioPlayer();
     return Scaffold(
       appBar: AppBar(),
       body:

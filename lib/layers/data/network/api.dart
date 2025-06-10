@@ -8,7 +8,8 @@ import 'package:path_provider/path_provider.dart';
 
 class Api {
   // todo change with .env
-  String url = 'http://93.183.81.143:8000';
+  String url = String.fromEnvironment('BASE_API_URL');
+  // String url = 'http://93.183.81.143:8000';
 
   Future<String> uploadImage(XFile file) async {
     // final upload_id = Helpers().getRandomString(11);
@@ -27,10 +28,8 @@ class Api {
 
     if (response.statusCode == 200) {
       final body = await response.stream.bytesToString();
-      print(jsonDecode(body));
       return jsonDecode(body)[0];
     } else {
-      print(response.reasonPhrase);
       return 'error';
     }
   }
@@ -47,9 +46,7 @@ class Api {
           '{"data": [{"path":"$pathImage","meta":{"_type":"gradio.FileData"}},0,1,2]}',
     );
     if (req.statusCode == 200) {
-      print(jsonDecode(req.body));
       final res = await _getResponse(url, jsonDecode(req.body)['event_id']);
-      print(res);
       return res[0]['url'];
     } else {
       return 'error_from_api';
@@ -92,7 +89,6 @@ class Api {
   Future<dynamic> _getResponse(Uri url, String eventId) async {
     Uri uri = Uri.parse('$url/$eventId');
     final res = await http.get(uri);
-    print('${jsonDecode(res.body.split('data:')[1])}');
     return jsonDecode(res.body.split('data:')[1]);
   }
 
@@ -155,13 +151,12 @@ class Api {
     request.headers['accept'] = 'application/json';
     request.headers['promt'] = promt;
     request.headers['token'] = token;
-    request.headers['style'] = '$style';
+    request.headers['style'] = style;
     final directory = await getApplicationDocumentsDirectory();
 
     String dirToFile;
     var response = await request.send();
     if (response.statusCode == 200) {
-      print('Файл успешно отправлен');
       final responseBody = await response.stream.bytesToString();
       final jsonResponse = json.decode(responseBody);
       String base64code = jsonResponse['0'];
@@ -173,7 +168,6 @@ class Api {
       await fileMusic.writeAsBytes(decodetBytes, flush: true);
       return fileMusic.path;
     } else {
-      print('Ошибка при отправке файла: ${response.statusCode}');
       return dirToFile = 'error_from_api';
     }
   }

@@ -1,21 +1,19 @@
-import 'package:eyeapp3d/core/deprecated/cubit/test_cubit.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
-import 'package:eyeapp3d/layers/presentation/screens/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class SettingsScreen extends StatelessWidget {
-  SettingsScreen({super.key});
+  const SettingsScreen({super.key});
 
-  String token = 'token';
-
-  String? text;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = TestCubit();
+
+  String token = 'token';
+
+  // String? text;
+    // final cubit = TestCubit();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
