@@ -187,7 +187,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 final stream = await Api().chatGen('hello');
                 stream.listen((e) {
                   print(utf8.decode(e).replaceAll('data: ', '').trim());
-                  
                 });
               },
             ),
