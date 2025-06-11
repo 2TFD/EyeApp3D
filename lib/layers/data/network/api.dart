@@ -113,8 +113,7 @@ class Api {
   Future<String> musicGen(String promt) async {
     String sessionHash = Helpers().getRandomString(10);
     String baseUrl = 'https://facebook-melodyflow.hf.space';
-    // String token = await UserProvider().getToken();
-    String token = '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';
+    String token = await UserProvider().getToken();
     print(sessionHash);
     await http.post(
       Uri.parse('$baseUrl/queue/join?__theme=system'),
