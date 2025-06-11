@@ -71,6 +71,8 @@ Make sure you have a connected Android/iOS device/simulator and run the followin
 <img src="https://github.com/2TFD/EyeApp3D/blob/main/publication/screenshots/root_gen.png" alt="root_gen" width="200">
 <img src="https://github.com/2TFD/EyeApp3D/blob/main/publication/screenshots/settings.png" alt="settings" width="200">
 <img src="https://github.com/2TFD/EyeApp3D/blob/main/publication/screenshots/site.png" alt="site" width="200">
+<img src="https://github.com/2TFD/EyeApp3D/blob/main/publication/screenshots/music_gen.png" alt="music_gen" width="200">
+<img src="https://github.com/2TFD/EyeApp3D/blob/main/publication/screenshots/player.png" alt="player" width="200">
 </p>
 
 

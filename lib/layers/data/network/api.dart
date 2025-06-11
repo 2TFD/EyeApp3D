@@ -86,7 +86,7 @@ class Api {
   //   return jsonDecode(res)['choices'][0]['message']['content'];
   // }
 
-  Future<HttpClientResponse> chatGen(String promt) async {
+  Future<Stream<String>> chatGen(String promt) async {
     String token = await UserProvider().getToken();
     String sessionHash = Helpers().getRandomString(10);
     String baseUrl = 'https://tencent-hunyuan-t1.hf.space';
@@ -100,14 +100,15 @@ class Api {
           '{"data":[null,[["$promt",null]]],"event_data":null,"fn_index":3,"trigger_id":6,"session_hash":"$sessionHash"}',
     );
     print(sessionHash);
-
-    final client = HttpClient();
-    final request = await client.getUrl(
+    final requset = http.Request(
+      'get',
       Uri.parse('$baseUrl/gradio_api/queue/data?session_hash=$sessionHash'),
     );
-    HttpClientResponse response = await request.close();
-    print(response.statusCode);
-    return response;
+    final response = await http.Client().send(requset);
+    final stream = response.stream
+        .transform(Utf8Decoder())
+        .transform(LineSplitter());
+    return stream;
   }
 
   Future<String> musicGen(String promt) async {

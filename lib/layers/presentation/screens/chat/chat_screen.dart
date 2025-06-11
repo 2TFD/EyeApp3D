@@ -17,7 +17,6 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Widget> messages = [];
   bool loading = false;
 
-
   void changeThinking() async {
     isThinking = !isThinking;
     await MessageProvider().changeThinking();
@@ -162,6 +161,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       String message =
                                           widget.textFiledcontroll.text;
                                       widget.textFiledcontroll.text = '';
+                                      setState(() {});
                                       MessageProvider().saveMessage(
                                         Message(
                                           message: message,
@@ -169,13 +169,41 @@ class _ChatScreenState extends State<ChatScreen> {
                                           user: true,
                                         ),
                                       );
-                                      loading = true;
+                                      // loading = true;
                                       updateChat();
-                                      await MessageProvider().newMessage(
-                                        message.replaceAll('\n', ' '),
-                                        isThinking,
-                                      );
-                                      loading = false;
+                                      final stream = MessageProvider()
+                                          .newMessage(
+                                            message.replaceAll('\n', ' '),
+                                            isThinking,
+                                          );
+                                      stream.listen((e) {
+                                        messages.last = Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Container(
+                                            margin: EdgeInsets.only(bottom: 10),
+                                            padding: EdgeInsets.all(5),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  '${e.time.hour}:${e.time.minute}',
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  e.message,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                        setState(() {});
+                                      });
+                                      // loading = false;
                                       updateChat();
                                     } else {
                                       showDialog(
