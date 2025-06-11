@@ -114,7 +114,6 @@ class Api {
     String sessionHash = Helpers().getRandomString(10);
     String baseUrl = 'https://facebook-melodyflow.hf.space';
     String token = await UserProvider().getToken();
-    print(sessionHash);
     await http.post(
       Uri.parse('$baseUrl/queue/join?__theme=system'),
       headers: {
