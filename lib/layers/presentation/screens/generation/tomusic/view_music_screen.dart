@@ -106,31 +106,36 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
       body:
           (widget.filePath == 'null' || widget.indexTrack == 'null')
               ? FutureBuilder(
-                // future: Api().musicGen(widget.promt, widget.style),
                 future: TrackProvider().newTrack(widget.promt),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    childW = Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () => context.push('/gallery/gallerymusic'),
-                            child: Container(
-                              width: 200,
-                              height: 200,
-                              color: Colors.white,
-                              child: Center(
-                                child: Text(
-                                  '${widget.promt}\ntap to see',
-                                  style: TextStyle(color: Colors.black),
+                    try {
+                      childW = Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap:
+                                  () => context.push('/gallery/gallerymusic'),
+                              child: Container(
+                                width: 200,
+                                height: 200,
+                                color: Colors.white,
+                                child: Center(
+                                  child: Text(
+                                    '${widget.promt}\ntap to see',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
+                          ],
+                        ),
+                      );
+                    } on Exception catch (e) {
+                      debugPrint(e.toString());
+                      childW = Text('try change token or wait');
+                    }
                   } else {
                     childW = CircularProgressIndicator();
                   }
@@ -138,7 +143,6 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                 },
               )
               : FutureBuilder(
-                // future: Storage().getListMusic(),
                 future: TrackProvider().getListTracks(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -208,7 +212,9 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                                     fileName: 'track.wav',
                                     bytes:
                                         await File(
-                                          snapshot.data![currentIndex].trackPath,
+                                          snapshot
+                                              .data![currentIndex]
+                                              .trackPath,
                                         ).readAsBytes(),
                                   );
                                 },
@@ -219,7 +225,11 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                                   await SharePlus.instance.share(
                                     ShareParams(
                                       files: [
-                                        XFile(snapshot.data![currentIndex].trackPath),
+                                        XFile(
+                                          snapshot
+                                              .data![currentIndex]
+                                              .trackPath,
+                                        ),
                                       ],
                                     ),
                                   );
@@ -231,9 +241,12 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                           Slider(
                             min: 0.0,
                             max: duration.inSeconds.toDouble(),
-                            value: (0.0 <= position.inSeconds.toDouble() && position.inSeconds.toDouble() <= duration.inSeconds.toDouble())
-                            ?position.inSeconds.toDouble()
-                            :0.0,
+                            value:
+                                (0.0 <= position.inSeconds.toDouble() &&
+                                        position.inSeconds.toDouble() <=
+                                            duration.inSeconds.toDouble())
+                                    ? position.inSeconds.toDouble()
+                                    : 0.0,
                             onChanged: handleSeek,
                             thumbColor: Colors.white,
                             activeColor: Colors.white,

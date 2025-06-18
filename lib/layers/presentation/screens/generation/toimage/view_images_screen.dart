@@ -22,14 +22,19 @@ class _ViewImagesScreenState extends State<ViewImagesScreen> {
         future: ImagesProvider().newImages(widget.promt),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            childW = FourImageCard(
-              promt: widget.promt,
-              list: [
-                snapshot.data!.imagePathOne,
-                snapshot.data!.imagePathTwo,
-                snapshot.data!.imagePathThree,
-                snapshot.data!.imagePathFour,
-            ]);
+            childW = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FourImageCard(
+                  promt: widget.promt,
+                  list: [
+                    snapshot.data!.imagePathOne,
+                    snapshot.data!.imagePathTwo,
+                    snapshot.data!.imagePathThree,
+                    snapshot.data!.imagePathFour,
+                ]),
+              ],
+            );
           } else {
             childW = CircularProgressIndicator();
           }

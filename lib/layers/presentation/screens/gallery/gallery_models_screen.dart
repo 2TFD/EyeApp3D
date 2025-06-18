@@ -23,7 +23,7 @@ class _GalleryScreenState extends State<GalleryModelsScreen> {
             Spacer(),
             IconButton(
               onPressed: () async {
-                ModelProvider().delListModels();
+                await ModelProvider().delListModels();
                 setState(() {});
               },
               icon: Icon(Icons.clear),

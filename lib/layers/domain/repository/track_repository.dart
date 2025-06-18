@@ -19,21 +19,24 @@ abstract class TrackRepository {
 
   Future<Track> newTrack(String promt) async {
     String trackUrl = await Api().musicGen(promt);
-    print(trackUrl);
-    String trackPath = await createFile(trackUrl);
-    print(trackPath);
-    List<Track> listTrack = await getListTracks();
-    print(listTrack);
-    Track track = Track(
-      promt: promt,
-      trackPath: trackPath,
-      indexTrack: listTrack.length + 1,
-    );
-    saveTrack(track);
-    return track;
+    if (trackUrl != 'error_token') {
+      String trackPath = await createFile(trackUrl);
+      List<Track> listTrack = await getListTracks();
+      Track track = Track(
+        promt: promt,
+        trackPath: trackPath,
+        indexTrack: listTrack.length + 1,
+      );
+      saveTrack(track);
+      return track;
+    } else {
+      throw FormatException('server_exception');
+    }
   }
 
   Future<void> saveTrack(Track track) async {
+    print(track.promt);
+    print(track.trackPath);
     final pref = await _pref;
     List<String>? tracks = await pref.getStringList('tracks');
     if (tracks != null) {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:eyeapp3d/core/brand/price_list.dart';
 import 'package:eyeapp3d/layers/domain/entity/message.dart';
 import 'package:eyeapp3d/layers/domain/provider/message_provider.dart';
@@ -15,14 +17,15 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   bool isThinking = false;
   List<Widget> messages = [];
+  String lastWord = '';
   bool loading = false;
-
+  StreamSubscription<Message>? stream;
   void changeThinking() async {
     isThinking = !isThinking;
     await MessageProvider().changeThinking();
   }
 
-  void updateChat() async {
+  Future<void> updateChat() async {
     List<Message> list = await MessageProvider().getListMessages();
     messages =
         list.map((e) {
@@ -51,6 +54,21 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     updateChat();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (stream != null) {
+      stream!.cancel();
+      MessageProvider().saveMessage(
+        Message(
+          message: '$lastWord (stopped)',
+          time: DateTime.now(),
+          user: false,
+        ),
+      );
+    }
+    super.dispose();
   }
 
   @override
@@ -107,7 +125,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             Spacer(),
                             IconButton(
                               onPressed: () async {
-                                MessageProvider().delListMessages();
+                                await MessageProvider().delListMessages();
                                 updateChat();
                               },
                               icon: Icon(Icons.clear_rounded),
@@ -149,7 +167,23 @@ class _ChatScreenState extends State<ChatScreen> {
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
                         suffixIcon:
                             loading
-                                ? CupertinoActivityIndicator()
+                                // ? CupertinoActivityIndicator()
+                                ? IconButton(
+                                  onPressed: () {
+                                    stream!.cancel();
+                                    MessageProvider().saveMessage(
+                                      Message(
+                                        message: '$lastWord (stopped)',
+                                        time: DateTime.now(),
+                                        user: false,
+                                      ),
+                                    );
+                                    setState(() {
+                                      loading = !loading;
+                                    });
+                                  },
+                                  icon: Icon(Icons.stop),
+                                )
                                 : IconButton(
                                   onPressed: () async {
                                     int tokens =
@@ -169,41 +203,60 @@ class _ChatScreenState extends State<ChatScreen> {
                                           user: true,
                                         ),
                                       );
-                                      // loading = true;
                                       updateChat();
-                                      final stream = MessageProvider()
+                                      stream = MessageProvider()
                                           .newMessage(
                                             message.replaceAll('\n', ' '),
                                             isThinking,
+                                          )
+                                          .listen(
+                                            (e) {
+                                              loading = true;
+                                              if (lastWord == '') {
+                                                messages.add(
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(''),
+                                                  ),
+                                                );
+                                              }
+                                              lastWord = e.message;
+                                              messages.last = Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                    bottom: 10,
+                                                  ),
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        '${e.time.hour}:${e.time.minute}',
+                                                        style: TextStyle(
+                                                          fontSize: 10,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        e.message,
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+
+                                              setState(() {});
+                                            },
+                                            onDone:
+                                                () => setState(() {
+                                                  loading = false;
+                                                }),
                                           );
-                                      stream.listen((e) {
-                                        messages.last = Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                            margin: EdgeInsets.only(bottom: 10),
-                                            padding: EdgeInsets.all(5),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  '${e.time.hour}:${e.time.minute}',
-                                                  style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  e.message,
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                        setState(() {});
-                                      });
-                                      // loading = false;
+                                      loading = false;
                                       updateChat();
                                     } else {
                                       showDialog(
@@ -221,6 +274,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   },
                                   icon: Icon(Icons.send_sharp),
                                 ),
+
                         hintText: 'enter promt',
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 25),
                       ),

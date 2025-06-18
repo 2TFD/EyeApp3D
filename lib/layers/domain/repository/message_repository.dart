@@ -20,6 +20,7 @@ abstract class MessageRepository {
 
   Stream<Message> newMessage(String promt, bool isThinling) async* {
     String message = '';
+    // saveMessage(Message(message: promt, time: DateTime.now(), user: true));
     final stream = await Api().chatGen(promt);
     await for (var e in stream) {
       if (e.startsWith('data:')) {
@@ -29,6 +30,7 @@ abstract class MessageRepository {
             final jsonData = jsonDecode(jsonStr);
             // print(jsonData["msg"] == 'process_generating');
             if (jsonData["msg"] == 'process_generating') {
+              // chek to no empty list data
               message = message + jsonData["output"]['data'][0][0][2];
               // print(message);
               yield Message(
@@ -41,6 +43,7 @@ abstract class MessageRepository {
               saveMessage(
                 Message(message: message, time: DateTime.now(), user: false),
               );
+              return;
             }
           }
         } catch (error) {

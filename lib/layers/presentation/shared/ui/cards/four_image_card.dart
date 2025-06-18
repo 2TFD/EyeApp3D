@@ -11,8 +11,7 @@ class FourImageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const snackBar = SnackBar(content: Text('saved'));
-    return GestureDetector(
-      onTap: () {},
+    return SizedBox(
       child: Column(
         children: [
           Text(promt),

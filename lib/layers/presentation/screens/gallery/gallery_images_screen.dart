@@ -15,7 +15,21 @@ class _GalleryScreenState extends State<GalleryImagesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('gallery images')),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Text('gallery images'),
+            Spacer(),
+            IconButton(
+              onPressed: ()async {
+                await ImagesProvider().delListModels();
+                setState(() {});
+              },
+              icon: Icon(Icons.clear, color: Colors.white,),
+            ),
+          ],
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {});
@@ -29,14 +43,17 @@ class _GalleryScreenState extends State<GalleryImagesScreen> {
                 crossAxisCount: 1,
                 children:
                     (snapshot.data as List<Images>).map((e) {
-                      return Center(child: FourImageCard(
-                        promt: e.promt,
-                        list: [
-                        e.imagePathOne,
-                        e.imagePathTwo,
-                        e.imagePathThree,
-                        e.imagePathFour,
-                      ]));
+                      return Center(
+                        child: FourImageCard(
+                          promt: e.promt,
+                          list: [
+                            e.imagePathOne,
+                            e.imagePathTwo,
+                            e.imagePathThree,
+                            e.imagePathFour,
+                          ],
+                        ),
+                      );
                     }).toList(),
               );
             } else {
