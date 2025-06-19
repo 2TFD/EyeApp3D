@@ -4,7 +4,6 @@ import 'package:eyeapp3d/core/brand/price_list.dart';
 import 'package:eyeapp3d/layers/domain/entity/message.dart';
 import 'package:eyeapp3d/layers/domain/provider/message_provider.dart';
 import 'package:eyeapp3d/layers/domain/provider/user_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -167,10 +166,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
                         suffixIcon:
                             loading
-                                // ? CupertinoActivityIndicator()
                                 ? IconButton(
                                   onPressed: () {
                                     stream!.cancel();
+                                    stream = null;
                                     MessageProvider().saveMessage(
                                       Message(
                                         message: '$lastWord (stopped)',
@@ -181,6 +180,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     setState(() {
                                       loading = !loading;
                                     });
+                                    
                                   },
                                   icon: Icon(Icons.stop),
                                 )
@@ -252,11 +252,14 @@ class _ChatScreenState extends State<ChatScreen> {
                                               setState(() {});
                                             },
                                             onDone:
-                                                () => setState(() {
+                                                () {
+                                                  setState(() {
                                                   loading = false;
-                                                }),
+                                                });
+                                                stream = null;
+                                                }
                                           );
-                                      loading = false;
+                                      // loading = false;
                                       updateChat();
                                     } else {
                                       showDialog(

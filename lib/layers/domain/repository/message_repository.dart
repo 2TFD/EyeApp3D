@@ -20,7 +20,6 @@ abstract class MessageRepository {
 
   Stream<Message> newMessage(String promt, bool isThinling) async* {
     String message = '';
-    // saveMessage(Message(message: promt, time: DateTime.now(), user: true));
     final stream = await Api().chatGen(promt);
     await for (var e in stream) {
       if (e.startsWith('data:')) {
@@ -28,11 +27,8 @@ abstract class MessageRepository {
           final jsonStr = e.substring(6).trim();
           if (jsonStr.isNotEmpty) {
             final jsonData = jsonDecode(jsonStr);
-            // print(jsonData["msg"] == 'process_generating');
             if (jsonData["msg"] == 'process_generating') {
-              // chek to no empty list data
               message = message + jsonData["output"]['data'][0][0][2];
-              // print(message);
               yield Message(
                 message: message,
                 time: DateTime.now(),
@@ -51,39 +47,6 @@ abstract class MessageRepository {
         }
       }
     }
-    // stream.listen((e) {
-    //   if (e.startsWith('data:')) {
-    //     try {
-    //       final jsonStr = e.substring(6).trim();
-    //       if (jsonStr.isNotEmpty) {
-    //         final jsonData = jsonDecode(jsonStr);
-    //         if (jsonData["msg"] == 'process_generating') {
-    //           message = message + jsonData["output"]['data'][0][0][2];
-    //           print(message);
-
-    //         }
-    //       }
-    //     } catch (error) {
-    //       print('error: $error');
-    //     }
-    //   }
-    // });
-
-    // String message = await Api().chatGen(promt);
-    // String response = jsonDecode(message)['choices'][0]['message']['content'];
-    // List<String> listmessage = message.split('</think>');
-    // DateTime time = DateTime.now();
-    // Message mes = Message(
-    //   message:
-    // isThinling
-    //     ? '${listmessage[0]}<end think>${listmessage[1]}'
-    //     : listmessage[1],
-    // time: time,
-    // user: false,
-    // );
-    // saveMessage(mes);
-    // return mes;
-    // return Message(message: 'message', time: DateTime.now(), user: false);
   }
 
   Future<void> saveMessage(Message message) async {

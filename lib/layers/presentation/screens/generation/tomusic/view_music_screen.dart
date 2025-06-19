@@ -100,7 +100,6 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
   @override
   Widget build(BuildContext context) {
     Widget childW;
-    // final player = AudioPlayer();
     return Scaffold(
       appBar: AppBar(),
       body:

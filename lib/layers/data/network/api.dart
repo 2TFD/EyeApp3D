@@ -112,6 +112,7 @@ class Api {
   }
 
   Future<String> musicGen(String promt) async {
+    print('start $promt');
     String sessionHash = Helpers().getRandomString(10);
     String baseUrl = 'https://facebook-melodyflow.hf.space';
     String token = await UserProvider().getToken();

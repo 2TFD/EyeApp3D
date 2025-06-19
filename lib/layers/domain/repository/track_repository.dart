@@ -10,6 +10,7 @@ abstract class TrackRepository {
   final _pref = SharedPreferences.getInstance();
 
   Future<String> createFile(String url) async {
+    print('create file $url');
     final directory = await getApplicationDocumentsDirectory();
     final image = await http.get(Uri.parse(url));
     final file = File('${directory.path}/${url.split('/').last}');
@@ -18,6 +19,7 @@ abstract class TrackRepository {
   }
 
   Future<Track> newTrack(String promt) async {
+    print('new track $promt');
     String trackUrl = await Api().musicGen(promt);
     if (trackUrl != 'error_token') {
       String trackPath = await createFile(trackUrl);

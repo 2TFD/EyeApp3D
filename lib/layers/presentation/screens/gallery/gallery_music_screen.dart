@@ -13,14 +13,22 @@ class _GalleryMusicScreenState extends State<GalleryMusicScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('music')),
+      appBar: AppBar(title: Row(
+        children: [
+          Text('music'),
+          Spacer(),
+          IconButton(onPressed: ()async{
+            await TrackProvider().delListTracks();
+            setState(() {});
+          }, icon: Icon(Icons.clear))
+        ],
+      )),
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {});
           return Future<void>.delayed(Duration(seconds: 1));
         },
         child: FutureBuilder(
-          // future: Storage().getListMusic(),
           future: TrackProvider().getListTracks(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
