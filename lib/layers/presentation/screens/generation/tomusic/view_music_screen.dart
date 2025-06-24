@@ -93,8 +93,8 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
 
   @override
   void dispose() {
-    player.dispose();
     super.dispose();
+    player.dispose();
   }
 
   @override
@@ -115,7 +115,7 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                           children: [
                             GestureDetector(
                               onTap:
-                                  () => context.push('/gallery/gallerymusic'),
+                                  () => context.go('/gallery/gallerymusic'),
                               child: Container(
                                 width: 200,
                                 height: 200,
