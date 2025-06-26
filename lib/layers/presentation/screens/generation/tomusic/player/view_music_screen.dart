@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:eyeapp3d/layers/domain/provider/track_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ViewMusicScreen extends StatefulWidget {
@@ -21,7 +23,7 @@ class ViewMusicScreen extends StatefulWidget {
 }
 
 class _ViewMusicScreenState extends State<ViewMusicScreen> {
-  bool isPause = true;
+  // bool isPause = true;
   final player = AudioPlayer();
   Duration position = Duration.zero;
   Duration duration = Duration.zero;
@@ -37,7 +39,7 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
   }
 
   void changePage(PageController pageController, int index) async {
-    player.stop();
+    await player.stop();
     pageController.animateToPage(
       index,
       duration: Duration(milliseconds: 500),
@@ -45,11 +47,11 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
     );
   }
 
-  void playPause() {
+  void playPause() async {
     if (player.playing) {
-      player.pause();
+      await player.pause();
     } else {
-      player.play();
+      await player.play();
     }
   }
 
@@ -58,6 +60,9 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
   Future<void> selectTrack(int index) async {
     await player.setAudioSource(playList[index]);
   }
+
+  late StreamSubscription durationStream;
+  late StreamSubscription playerStateStream;
 
   @override
   void initState() {
@@ -69,7 +74,7 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
         setState(() => position = p);
       });
 
-      player.durationStream.listen((d) {
+      durationStream = player.durationStream.listen((d) {
         if (d != null) {
           setState(() => duration = d!);
         } else {
@@ -78,14 +83,14 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
         }
       });
 
-      player.playerStateStream.listen((state) {
+      playerStateStream = player.playerStateStream.listen((state) {
         if (state.processingState == ProcessingState.completed) {
           setState(() {
             position = Duration.zero;
           });
           player.pause();
           player.seek(position);
-          isPause = true;
+          // isPause = true;
         }
       });
     }
@@ -94,6 +99,8 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
   @override
   void dispose() {
     super.dispose();
+    playerStateStream.cancel();
+    durationStream.cancel();
     player.dispose();
   }
 
@@ -158,41 +165,47 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                         children: [
                           SizedBox(
                             height: 250,
-                            child: Expanded(
-                              child: PageView.builder(
-                                controller: pageController,
-                                itemCount: snapshot.data!.length,
-                                onPageChanged: (index) async {
-                                  setState(() {
-                                    currentIndex = index;
-                                    handleSeek(0.0);
-                                  });
-                                },
-                                itemBuilder: (context, index) {
-                                  return Center(
-                                    child: Container(
-                                      width: 200,
-                                      height: 200,
-                                      color: Colors.white,
-                                      child: Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              snapshot.data![index].promt,
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                              ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: PageView.builder(
+                                    controller: pageController,
+                                    itemCount: snapshot.data!.length,
+                                    onPageChanged: (index) async {
+                                      setState(()  {
+                                        currentIndex = index;
+                                        // isPause = true;
+                                        player.pause();
+                                        handleSeek(0.0);
+                                      });
+                                    },
+                                    itemBuilder: (context, index) {
+                                      return Center(
+                                        child: Container(
+                                          width: 200,
+                                          height: 200,
+                                          color: Colors.white,
+                                          child: Center(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  snapshot.data![index].promt,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Row(
@@ -261,21 +274,21 @@ class _ViewMusicScreenState extends State<ViewMusicScreen> {
                                     ),
                                 icon: Icon(Icons.arrow_left, size: 45),
                               ),
-                              (isPause == false)
+                              (player.playing)
                                   ? IconButton(
                                     onPressed: () async {
-                                      selectTrack(currentIndex);
+                                      await selectTrack(currentIndex);
                                       playPause();
-                                      isPause = true;
+                                      // isPause = true;
                                       setState(() {});
                                     },
                                     icon: Icon(Icons.pause, size: 30),
                                   )
                                   : IconButton(
                                     onPressed: () async {
-                                      selectTrack(currentIndex);
+                                      await selectTrack(currentIndex);
                                       playPause();
-                                      isPause = false;
+                                      // isPause = false;
                                       setState(() {});
                                     },
                                     icon: Icon(

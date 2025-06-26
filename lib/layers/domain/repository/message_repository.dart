@@ -23,6 +23,7 @@ abstract class MessageRepository {
     final stream = await Api().chatGen(promt);
     await for (var e in stream) {
       if (e.startsWith('data:')) {
+        print(e);
         try {
           final jsonStr = e.substring(6).trim();
           if (jsonStr.isNotEmpty) {

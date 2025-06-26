@@ -10,7 +10,7 @@ class GalleryImagesScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryImagesScreen> {
-  Widget childW = Text('null');
+  Widget childW = Text('');
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _GalleryScreenState extends State<GalleryImagesScreen> {
                     }).toList(),
               );
             } else {
-              childW = Center(child: Text('null'));
+              childW = Center(child: Text(''));
             }
             return childW;
           },

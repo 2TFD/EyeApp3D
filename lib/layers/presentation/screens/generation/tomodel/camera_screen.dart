@@ -1,5 +1,4 @@
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -12,7 +11,7 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  late CameraController cameraController;
+  CameraController? cameraController;
   List<CameraDescription> cameras = [];
 
   XFile? image;
@@ -31,7 +30,7 @@ class _CameraScreenState extends State<CameraScreen> {
         ResolutionPreset.max,
         enableAudio: false,
       );
-      cameraController
+      cameraController!
           .initialize()
           .then((_) {
             if (!mounted) {
@@ -49,13 +48,13 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   void dispose() {
-    cameraController.dispose();
+    cameraController!.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!cameraController.value.isInitialized) {
+    if (cameraController == null || !cameraController!.value.isInitialized) {
       return Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     return SafeArea(
@@ -64,12 +63,11 @@ class _CameraScreenState extends State<CameraScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              CameraPreview(cameraController),
+              CameraPreview(cameraController!),
               SizedBox(height: 30),
               IconButton(
                 onPressed: () async {
-                  image = await cameraController.takePicture();
-                  // context.goNamed('preview', extra: {'par1': image!});
+                  image = await cameraController!.takePicture();
                   context.go('/gen/camera/preview', extra: image!);
                 },
                 icon: Icon(Icons.circle_rounded, size: 80),

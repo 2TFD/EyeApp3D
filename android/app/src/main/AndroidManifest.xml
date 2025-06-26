@@ -5,9 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:enableOnBackInvokedCallback="true"
         android:usesCleartextTraffic="true"
         android:label="eyeapp3d"
-       android:name=".MainApplication"
+        android:name=".MainApplication"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:screenOrientation="portrait"

@@ -54,7 +54,7 @@ class _GalleryMusicScreenState extends State<GalleryMusicScreen> {
                 ),
               );
             } else {
-              return Center(child: Text('null'));
+              return Center(child: Text(''));
             }
           },
         ),

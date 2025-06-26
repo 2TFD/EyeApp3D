@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 import 'package:eyeapp3d/core/deprecated/cubit/test_cubit.dart';
-import 'package:eyeapp3d/layers/data/network/api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final cubit = TestCubit();
   bool light = true;
   List<int> tokensForCase = [0];
-  int currnetWin = 0;
+  int currnetWin =0;
   void setRandomList() {
     List<int> list = [0];
     for (int i = 0; i <= 100; i++) {
@@ -118,30 +115,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                           SizedBox(
                                             height: 300,
                                             width: 300,
-                                            child: Expanded(
-                                              child: PageView.builder(
-                                                itemCount: 101,
-                                                controller: pageController,
-                                                onPageChanged: (value) {
-                                                  currnetWin = value;
-                                                },
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                itemBuilder:
-                                                    (context, index) => Center(
-                                                      child: Container(
-                                                        width: 100,
-                                                        height: 50,
-                                                        color: Colors.black,
-                                                        child: Center(
-                                                          child: Text(
-                                                            tokensForCase[index]
-                                                                .toString(),
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                  child: PageView.builder(
+                                                    itemCount: 101,
+                                                    controller: pageController,
+                                                    onPageChanged: (value) {
+                                                      currnetWin = value;
+                                                    },
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    itemBuilder:
+                                                        (context, index) => Center(
+                                                          child: Container(
+                                                            width: 100,
+                                                            height: 50,
+                                                            color: Colors.black,
+                                                            child: Center(
+                                                              child: Text(
+                                                                tokensForCase[index]
+                                                                    .toString(),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                              ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           CupertinoButton(
@@ -154,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             onPressed: () async {
                                               pageController.jumpTo(0);
-                                              setRandomList();
+                                              setRandomList();    
                                               pageController
                                                   .animateToPage(
                                                     100,

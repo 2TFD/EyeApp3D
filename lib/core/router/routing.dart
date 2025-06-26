@@ -9,7 +9,7 @@ import 'package:eyeapp3d/layers/presentation/screens/gallery/gallery_root_screen
 import 'package:eyeapp3d/layers/presentation/screens/generation/gen_root_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/generation/toimage/get_promt_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/generation/tomusic/music_promt_screen.dart';
-import 'package:eyeapp3d/layers/presentation/screens/generation/tomusic/view_music_screen.dart';
+import 'package:eyeapp3d/layers/presentation/screens/generation/tomusic/player/view_music_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/home_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/generation/tomodel/preview_screen.dart';
 import 'package:eyeapp3d/layers/presentation/screens/reg/instruction_screen.dart';
@@ -27,10 +27,8 @@ class Routing {
     // initialLocation: '/gen/music_promt',
     initialLocation: '/',
     redirect: (context, state) async {
-      // bool isInit = await Storage().getIsInit();
       bool isInit = await UserProvider().getIsInit();
       if (!isInit) {
-        // Storage().initStorage();
         await UserProvider().setIsInit(true);
         return '/reg';
       } else {
@@ -69,23 +67,14 @@ class Routing {
                     routes: [
                       GoRoute(
                         path: 'preview',
-                        // name: 'preview',
-                        // builder: (context, state) {
-                        //   Map<String, dynamic> extra =
-                        //       state.extra as Map<String, dynamic>;
-                        //   return PreviewScreen(image: extra['par1']);
-                        // },
                         builder:
                             (context, state) => PreviewScreen(
                               image:
-                                  // (state.extra
-                                  //     as Map<String, dynamic>)['image'] as XFile,
                                   state.extra as XFile
                             ),
                         routes: [
                           GoRoute(
                             path: 'view3d',
-                            // name: 'view3d',
                             builder:
                                 (context, state) => ViewModelScreen(
                                   fileImage:
@@ -95,14 +84,6 @@ class Routing {
                                       (state.extra
                                           as Map<String, dynamic>)['dirPath'] as String,
                                 ),
-                            // {
-                            // Map<String, dynamic> extra =
-                            //     state.extra as Map<String, dynamic>;
-                            // return ViewModelScreen(
-                            //   fileImage: extra['par1'],
-                            //   dirPath: extra['par2'],
-                            // ),
-                            // },
                           ),
                         ],
                       ),

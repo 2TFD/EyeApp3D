@@ -71,21 +71,6 @@ class Api {
     ];
   }
 
-  // Future<String> chatGen(String promt) async {
-  //   String token = await UserProvider().getToken();
-  //   final req = await http.post(
-  //     Uri.parse('https://router.huggingface.co/cerebras/v1/chat/completions'),
-  //     headers: {
-  //       'Authorization': 'Bearer $token',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body:
-  //         '{"messages": [{"role": "user","content": "$promt"}],"model": "qwen-3-32b","stream": false}',
-  //   );
-  //   final res = req.body;
-  //   return jsonDecode(res)['choices'][0]['message']['content'];
-  // }
-
   Future<Stream<String>> chatGen(String promt) async {
     String token = await UserProvider().getToken();
     String sessionHash = Helpers().getRandomString(10);
@@ -99,7 +84,6 @@ class Api {
       body:
           '{"data":[null,[["$promt",null]]],"event_data":null,"fn_index":3,"trigger_id":6,"session_hash":"$sessionHash"}',
     );
-    print(sessionHash);
     final requset = http.Request(
       'get',
       Uri.parse('$baseUrl/gradio_api/queue/data?session_hash=$sessionHash'),

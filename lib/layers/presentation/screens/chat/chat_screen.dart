@@ -88,31 +88,31 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
                 itemBuilder:
                     (context) => [
-                      PopupMenuItem(
-                        enabled: false,
-                        child: Row(
-                          children: [
-                            Text(
-                              'show thinking',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Spacer(),
-                            StatefulBuilder(
-                              builder:
-                                  (context, setState) => Switch(
-                                    value: isThinking,
-                                    activeColor: Colors.white,
-                                    onChanged: (bool value) async {
-                                      setState(() {
-                                        changeThinking();
-                                      });
-                                      this.setState(() {});
-                                    },
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // PopupMenuItem(
+                      //   enabled: false,
+                      //   child: Row(
+                      //     children: [
+                      //       Text(
+                      //         'show thinking',
+                      //         style: TextStyle(color: Colors.white),
+                      //       ),
+                      //       Spacer(),
+                      //       StatefulBuilder(
+                      //         builder:
+                      //             (context, setState) => Switch(
+                      //               value: isThinking,
+                      //               activeColor: Colors.white,
+                      //               onChanged: (bool value) async {
+                      //                 setState(() {
+                      //                   changeThinking();
+                      //                 });
+                      //                 this.setState(() {});
+                      //               },
+                      //             ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       PopupMenuItem(
                         enabled: false,
                         child: Row(
@@ -189,16 +189,17 @@ class _ChatScreenState extends State<ChatScreen> {
                                     int tokens =
                                         await UserProvider().getTokens();
                                     if (tokens >= PriceList().chat_gen) {
+                                      loading = true;
                                       UserProvider().buyTokens(
                                         PriceList().chat_gen,
                                       );
-                                      String message =
-                                          widget.textFiledcontroll.text;
-                                      widget.textFiledcontroll.text = '';
+                                      // String message =
+                                      //     widget.textFiledcontroll.text;
+                                      // widget.textFiledcontroll.text = '';
                                       setState(() {});
                                       MessageProvider().saveMessage(
                                         Message(
-                                          message: message,
+                                          message: widget.textFiledcontroll.text,
                                           time: DateTime.now(),
                                           user: true,
                                         ),
@@ -206,7 +207,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       updateChat();
                                       stream = MessageProvider()
                                           .newMessage(
-                                            message.replaceAll('\n', ' '),
+                                            widget.textFiledcontroll.text.replaceAll('\n', ' '),
                                             isThinking,
                                           )
                                           .listen(
@@ -259,7 +260,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 stream = null;
                                                 }
                                           );
-                                      // loading = false;
                                       updateChat();
                                     } else {
                                       showDialog(
