@@ -49,7 +49,7 @@ Make sure you have a connected Android/iOS device/simulator and run the followin
 ### generation
   - images
   - models
-  - music
+  - music(playback errors)
   - chat
 
 ## Screenshots
